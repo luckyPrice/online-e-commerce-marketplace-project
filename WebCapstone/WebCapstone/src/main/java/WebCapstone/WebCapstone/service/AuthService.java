@@ -108,7 +108,7 @@ public class AuthService {
         System.out.println("...");
         int exprTime = 3600000;
 
-        SignInResponseDTO signInResponseDTO = new SignInResponseDTO(token, exprTime, memberEntity);
+        SignInResponseDTO signInResponseDTO = new SignInResponseDTO(token, exprTime, memberEntity); // 토큰 만료시간 맴버 정보
         return ResponseDTO.setSuccess("로그인 성공", signInResponseDTO);
     }
 }
