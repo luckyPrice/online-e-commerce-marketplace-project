@@ -2,6 +2,7 @@ package WebCapstone.WebCapstone.service;
 
 
 import WebCapstone.WebCapstone.DTO.ChatDTO;
+import WebCapstone.WebCapstone.DTO.MyChatDTO;
 import WebCapstone.WebCapstone.entity.ChatEntity;
 import WebCapstone.WebCapstone.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,9 @@ public class ChatService {
     ChatRepository chatRepository;
 
 
-
-
-
-
-
-
     public ChatDTO chatsave(ChatDTO chatDTO){
         ChatEntity chatEntity = new ChatEntity(UUID.randomUUID().toString(), chatDTO.getSenduser(), chatDTO.getReceiveuser(),
+                chatDTO.getChattitle(),
                 chatDTO.getMessage(), chatDTO.getDate());
         System.out.println(chatEntity);
         chatRepository.save(chatEntity);
@@ -38,15 +34,15 @@ public class ChatService {
 
         List<ChatEntity> chat = chatRepository.findAll();
         for(var i = 0 ; i < chatRepository.count(); i ++){
-            if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getSenduser()) && Objects.equals(chat.get(i).getReceiveuser(), chatDTO.getReceiveuser())){
+            if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getSenduser()) && Objects.equals(chat.get(i).getReceiveuser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getChattitle(), chatDTO.getChattitle())){
                 System.out.println("inputmessage");
-                ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).message(chat.get(i).getMessage())
+                ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle()).message(chat.get(i).getMessage())
                                 .date(chat.get(i).getDate()).build();
                 chatDTOS.add(chatDTO1);
             }
-            else if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser())){
+            else if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getChattitle(), chatDTO.getChattitle())){
                 System.out.println("inputmessage");
-                ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).message(chat.get(i).getMessage())
+                ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle()).message(chat.get(i).getMessage())
                         .date(chat.get(i).getDate()).build();
                 chatDTOS.add(chatDTO1);
             }
@@ -65,19 +61,24 @@ public class ChatService {
 
     }
 
-    public Set<String> findMyChatRoom(String usernickname){
-        Set <String> stringList = new HashSet<>();
+    public Set<MyChatDTO> findMyChatRoom(String usernickname){
+        Set <MyChatDTO> myChatDTOS = new HashSet<>();
+        System.out.println("test " + usernickname);
         List<ChatEntity> chat = chatRepository.findAll();
         for(var i = 0 ; i < chatRepository.count() ; i++){
             if(Objects.equals(chat.get(i).getSenduser(),usernickname)){
-                stringList.add(chat.get(i).getReceiveuser());
+                MyChatDTO myChatDTO = MyChatDTO.builder().nickname(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle())
+                        .build();
+                myChatDTOS.add(myChatDTO);
             }
             else if(Objects.equals(chat.get(i).getReceiveuser(), usernickname)){
-                stringList.add(chat.get(i).getSenduser());
+                MyChatDTO myChatDTO = MyChatDTO.builder().nickname(chat.get(i).getSenduser()).chattitle(chat.get(i).getChattitle())
+                        .build();
+                myChatDTOS.add(myChatDTO);
             }
         }
-        System.out.println(stringList);
-        return stringList;
+        System.out.println(myChatDTOS);
+        return myChatDTOS;
     }
 
 

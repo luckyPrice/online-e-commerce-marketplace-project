@@ -1,17 +1,15 @@
 package WebCapstone.WebCapstone.DTO.Upload_Order;
 
-import WebCapstone.WebCapstone.Upload.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
+@Setter
+@Getter
 @NoArgsConstructor
 public class UploadDTO {
     private String memberid;
+
     private String category;
     private String itemname;
     private int itemid;
@@ -20,59 +18,15 @@ public class UploadDTO {
     private String maintext;//게시글 본문
     private int itemprice;
 
-    public String getMemberid() {
-        return memberid;
-    }
-
-    public void setMemberid(String memberid) {
+    @Builder
+    public UploadDTO(String memberid, String category, String itemname, int itemid, String title, String maintext, int itemprice){
         this.memberid = memberid;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getItemname() {
-        return itemname;
-    }
-
-    public void setItemname(String itemname) {
         this.itemname = itemname;
-    }
-
-    public int getItemid() {
-        return itemid;
-    }
-
-    public void setItemid(int itemid) {
         this.itemid = itemid;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getMaintext() {
-        return maintext;
-    }
-
-    public void setMaintext(String maintext) {
         this.maintext = maintext;
-    }
-
-    public int getItemprice() {
-        return itemprice;
-    }
-
-    public void setItemprice(int itemprice) {
         this.itemprice = itemprice;
     }
+
+
 }

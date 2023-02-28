@@ -1,4 +1,4 @@
-package WebCapstone.WebCapstone.Upload;
+package WebCapstone.WebCapstone.entity;
 
 
 import WebCapstone.WebCapstone.DTO.SignupDTO;
@@ -17,8 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(name="upload")
 @Table(name ="upload")
-public class Upload {
+public class UploadEntity {
     private String memberid;
+
     private String category;
 
     private String itemname;
@@ -29,7 +30,7 @@ public class Upload {
     private String maintext;//게시글 본문
     private int itemprice;
 
-    public Upload(UploadDTO dto){
+    public UploadEntity(UploadDTO dto){
         this.memberid = dto.getMemberid();
         this.category = dto.getCategory();
         this.itemname = dto.getItemname();

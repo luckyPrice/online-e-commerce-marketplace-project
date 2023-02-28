@@ -104,7 +104,7 @@ public class AuthService {
 
 
         memberEntity.setPwd("");
-        String token = tokenProvider.create(id);
+        String token = tokenProvider.create(memberEntity.getNickname());
         System.out.println("...");
         int exprTime = 3600000;
 
