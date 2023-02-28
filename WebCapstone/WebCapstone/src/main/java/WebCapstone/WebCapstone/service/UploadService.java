@@ -3,12 +3,8 @@ package WebCapstone.WebCapstone.service;
 import WebCapstone.WebCapstone.DTO.ResponseDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
-import WebCapstone.WebCapstone.Upload.Category;
-import WebCapstone.WebCapstone.Upload.Upload;
-import WebCapstone.WebCapstone.entity.MemberEntity;
-import WebCapstone.WebCapstone.repository.MemberRepository;
+import WebCapstone.WebCapstone.entity.UploadEntity;
 import WebCapstone.WebCapstone.repository.UploadRepository;
-import WebCapstone.WebCapstone.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +14,7 @@ public class UploadService {
     @Autowired
     UploadRepository uploadRepository;
 
-    @Autowired
-    TokenProvider tokenProvider;
+
 
     public ResponseDTO<UploadResponseDTO> Upload(UploadDTO dto){
         String memberid = dto.getMemberid();
@@ -64,7 +59,7 @@ public class UploadService {
             dto.setMaintext(" ");
         }
 
-        Upload upload = new Upload(dto);
+        UploadEntity upload = new UploadEntity(dto);
         System.out.println("ok");
 
 

@@ -22,7 +22,7 @@ public class ChatRoomController {
 
 
 
-
+    @Async
     @PostMapping("/create")
     @ResponseBody
     public ChatDTO saveChat(@RequestBody ChatDTO chatDTO){
@@ -45,9 +45,9 @@ public class ChatRoomController {
     @Async
     @PostMapping("/getchatroom")
     @ResponseBody
-    public Set<String> getMyChatRoomInfo(@RequestBody SignupDTO signupDTO){
+    public Set<MyChatDTO> getMyChatRoomInfo(@RequestBody NicknameDTO nickname){
 
-        return chatService.findMyChatRoom(signupDTO.getNickname());
+        return chatService.findMyChatRoom(nickname.getNickname());
     }
 
 

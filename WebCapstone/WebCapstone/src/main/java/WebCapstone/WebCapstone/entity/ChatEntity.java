@@ -19,6 +19,8 @@ public class ChatEntity {
     private String id;
     private String senduser;
     private String receiveuser;
+
+    private String chattitle;
     private String message;
     private String date;
 

@@ -16,7 +16,7 @@ public class TokenProvider {
     private static final String SECURITY_KEY = "2CSAFWFWAFWF22214142SFWAFW3W";
 
     //Jwt 생성하는 매서드
-    public String create(String id){
+    public String create(String nickname){
         //만료날짜를 현재 날짜 + 1시간으로 설정
         Date exprTime = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
         System.out.println("..");
@@ -24,7 +24,7 @@ public class TokenProvider {
         //JWT 생성
         return  Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
-                .setSubject(id).setIssuedAt(new Date()).setExpiration(exprTime)
+                .setSubject(nickname).setIssuedAt(new Date()).setExpiration(exprTime)
                 .compact();
 
 
