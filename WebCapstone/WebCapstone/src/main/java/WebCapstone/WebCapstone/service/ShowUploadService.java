@@ -35,6 +35,7 @@ public class ShowUploadService {
                     .itemprice(uploadEntities.get(i).getItemprice())
                     .title(uploadEntities.get(i).getTitle())
                     .maintext(uploadEntities.get(i).getMaintext())
+                    .URL(uploadEntities.get(i).getURL())
                     .build();
             uploadDTOS.add(uploadDTO);
         }
@@ -53,6 +54,7 @@ public class ShowUploadService {
                     .itemprice(uploadEntity.getItemprice())
                     .title(uploadEntity.getTitle())
                     .maintext(uploadEntity.getMaintext())
+                    .URL(uploadEntity.getURL())
                     .build();
             return uploadDTO;
         }

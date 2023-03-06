@@ -24,6 +24,7 @@ public class UploadService {
         String title = dto.getTitle();
         int itemprice = dto.getItemprice();
         int itemid = 1;
+        String URL = dto.getURL();
 
 
         try{
