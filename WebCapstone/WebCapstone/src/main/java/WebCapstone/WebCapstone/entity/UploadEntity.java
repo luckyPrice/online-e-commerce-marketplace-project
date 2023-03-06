@@ -30,6 +30,8 @@ public class UploadEntity {
     private String maintext;//게시글 본문
     private int itemprice;
 
+    private String URL;
+
     public UploadEntity(UploadDTO dto){
         this.memberid = dto.getMemberid();
         this.category = dto.getCategory();
@@ -38,6 +40,7 @@ public class UploadEntity {
         this.title = dto.getTitle();
         this.maintext = dto.getMaintext();
         this.itemprice = dto.getItemprice();
+        this.URL = dto.getURL();
 
     }
 
