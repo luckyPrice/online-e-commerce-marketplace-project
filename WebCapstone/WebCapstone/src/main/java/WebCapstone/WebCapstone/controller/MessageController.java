@@ -27,9 +27,6 @@ public class MessageController {
     @Async
     @MessageMapping("/chat")
     public void receivePrivate(@Payload ChatDTO chat) {
-
-        System.out.println("in1");
-        System.out.println(chat);
         simpMessagingTemplate.convertAndSend("/private/message/" + chat.getReceiveuser() , chat); // 룸아이디 뭐를 가져오지?
 
     }

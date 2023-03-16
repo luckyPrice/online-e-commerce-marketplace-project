@@ -1,12 +1,15 @@
 package WebCapstone.WebCapstone.service;
 
+import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.ResponseDTO;
 import WebCapstone.WebCapstone.DTO.SignInDTO;
 import WebCapstone.WebCapstone.DTO.SignInResponseDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
+import WebCapstone.WebCapstone.entity.FavorEntity;
 import WebCapstone.WebCapstone.entity.MemberEntity;
 import WebCapstone.WebCapstone.entity.UploadEntity;
+import WebCapstone.WebCapstone.repository.FavorRepository;
 import WebCapstone.WebCapstone.repository.UploadRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +26,9 @@ public class ShowUploadService {
     @Autowired
     UploadRepository uploadRepository;
 
+    @Autowired
+    FavorRepository favorRepository;
+
 
     public List<UploadDTO> ShowUpload(){
         List<UploadDTO> uploadDTOS = new ArrayList<>();
@@ -36,6 +42,9 @@ public class ShowUploadService {
                     .title(uploadEntities.get(i).getTitle())
                     .maintext(uploadEntities.get(i).getMaintext())
                     .URL(uploadEntities.get(i).getURL())
+                    .view(uploadEntities.get(i).getView())
+                    .favor(uploadEntities.get(i).getFavor())
+                    .uploadtime(uploadEntities.get(i).getUploadtime())
                     .build();
             uploadDTOS.add(uploadDTO);
         }
@@ -44,8 +53,15 @@ public class ShowUploadService {
 
     }
 
-    public UploadDTO ShowUploadDetail(int itemid) {
-        UploadEntity uploadEntity = uploadRepository.findByitemid(itemid);
+    public UploadDTO ShowUploadDetail(ItemIDDTO itemIDDTO) {
+        UploadEntity uploadEntity = uploadRepository.findByitemid(itemIDDTO.getItemid());
+        uploadEntity.setView(uploadEntity.getView()+1);
+        uploadRepository.save(uploadEntity);
+        boolean favorcheck = false;
+        FavorEntity favor = favorRepository.findBySenduserAndReceiveuserAndTitle(itemIDDTO.getCurrentuser(), uploadEntity.getMemberid(), uploadEntity.getTitle());
+        if(favor!=null){
+            favorcheck = true;
+        }
         if(uploadEntity != null){
             UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
                     .itemid(uploadEntity.getItemid())
@@ -55,6 +71,10 @@ public class ShowUploadService {
                     .title(uploadEntity.getTitle())
                     .maintext(uploadEntity.getMaintext())
                     .URL(uploadEntity.getURL())
+                    .view(uploadEntity.getView())
+                    .favor(uploadEntity.getFavor())
+                    .uploadtime(uploadEntity.getUploadtime())
+                    .favorcheck(favorcheck)
                     .build();
             return uploadDTO;
         }
