@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ItemIDDTO {
+public class FavorDTO {
+    private String nickname;
     private int itemid;
-
-    private String currentuser;
 }

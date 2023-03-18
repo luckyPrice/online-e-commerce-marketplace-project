@@ -1,18 +1,30 @@
 package WebCapstone.WebCapstone.service;
 
+import WebCapstone.WebCapstone.DTO.FavorDTO;
+import WebCapstone.WebCapstone.DTO.FavorRequestDTO;
+import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.ResponseDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
+import WebCapstone.WebCapstone.entity.FavorEntity;
 import WebCapstone.WebCapstone.entity.UploadEntity;
+import WebCapstone.WebCapstone.repository.FavorRepository;
 import WebCapstone.WebCapstone.repository.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class UploadService {
 
     @Autowired
     UploadRepository uploadRepository;
+
+    @Autowired
+    FavorRepository favorRepository;
 
 
 
@@ -24,7 +36,9 @@ public class UploadService {
         String title = dto.getTitle();
         int itemprice = dto.getItemprice();
         int itemid = 1;
+        String detiaicategory = dto.getDetailcategory();
         String URL = dto.getURL();
+
 
 
         try{
@@ -38,7 +52,6 @@ public class UploadService {
             return ResponseDTO.setFailed("업로드한 상품의 고유코드에 문제가 생겼습니다.");
         }
 
-        System.out.println(dto.toString());
 
 
         try{
@@ -61,7 +74,6 @@ public class UploadService {
         }
 
         UploadEntity upload = new UploadEntity(dto);
-        System.out.println("ok");
 
 
         try{
@@ -74,5 +86,46 @@ public class UploadService {
 
 
         return ResponseDTO.setSuccess("상품이 업로드 되었습니다.", null);
+    }
+
+    public void deleteUpload(ItemIDDTO itemIDDTO){
+        uploadRepository.deleteByItemid(itemIDDTO.getItemid());
+    }
+
+    public void favorApply(FavorDTO favorDTO){
+        UploadEntity uploadEntity = uploadRepository.findByitemid(favorDTO.getItemid());
+        int count = 1;
+        if(uploadEntity!=null){
+            FavorEntity favor = favorRepository.findBySenduserAndReceiveuserAndTitle(favorDTO.getNickname(), uploadEntity.getMemberid(), uploadEntity.getTitle());
+            if(favor != null){
+                favorRepository.deleteById(favor.getId());
+                uploadEntity.setFavor(uploadEntity.getFavor()-1); // 카운트 한개 감소
+                uploadRepository.save(uploadEntity);
+            }
+            else{
+                while(favorRepository.findByid(count)!=null){
+                    count++;
+                }
+
+                StringBuffer stringBuffer = new StringBuffer();
+                Date now = new Date();
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+                simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+
+                FavorRequestDTO favorRequestDTO = FavorRequestDTO.builder().id(count)
+                        .senduser(favorDTO.getNickname())
+                        .receiveuser(uploadEntity.getMemberid())
+                        .title(uploadEntity.getTitle())
+                        .time(stringBuffer.toString())
+                        .build();
+                FavorEntity favorEntity = new FavorEntity(favorRequestDTO);
+                favorRepository.save(favorEntity);
+                uploadEntity.setFavor(uploadEntity.getFavor()+1); // 카운트 한개 증가
+                uploadRepository.save(uploadEntity);
+            }
+
+        }
+
     }
 }

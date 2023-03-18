@@ -19,7 +19,6 @@ public class AuthController {
 
     @PostMapping("/signUp") // 회원가입 기능
     public ResponseDTO<?> signUp(@RequestBody SignupDTO requestBody){
-        System.out.println(requestBody.toString());
         ResponseDTO<?> result = authService.signUp(requestBody);
         return result;
 
@@ -27,7 +26,6 @@ public class AuthController {
 
     @PostMapping("/signIn") // 로그인 기능
     public ResponseDTO<SignInResponseDTO> signIn(@RequestBody SignInDTO requestBody){
-        System.out.println(requestBody.toString());
         ResponseDTO<SignInResponseDTO> result = authService.signIn(requestBody);
         return result;
 

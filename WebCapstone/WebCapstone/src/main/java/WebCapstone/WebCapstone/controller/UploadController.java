@@ -1,5 +1,6 @@
 package WebCapstone.WebCapstone.controller;
 
+import WebCapstone.WebCapstone.DTO.FavorDTO;
 import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.ResponseDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -40,20 +44,27 @@ public class UploadController {
             , @RequestParam(value="itemid", required=false) String itemid
             , @RequestParam(value="title", required=false) String title
             , @RequestParam(value="maintext", required=false) String maintext
-            , @RequestParam(value="itemprice", required=false) String itemprice) throws IOException {
+            , @RequestParam(value="itemprice", required=false) String itemprice
+            ,@RequestParam(value="detailcategory", required=false)String detailcategory) throws IOException {
         String URL = awsS3Service.uploadFile(files);
+
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
         UploadDTO uploadDTO = UploadDTO.builder().memberid(memberid).category(category)
                         .itemname(itemname).itemid(Integer.parseInt(itemid)).title(title).maintext(maintext)
-                        .itemprice(Integer.parseInt(itemprice)).URL(URL).build();
+                        .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
         ResponseDTO<UploadResponseDTO> result = uploadService.Upload(uploadDTO);
         return result;
+
 
     }
 
 
     @GetMapping("/UploadShow")// 업로드 기능
     public List<UploadDTO> ShowUpload(){
-        System.out.println("메인페이지 업로드 요청");
         return showUploadService.ShowUpload();
 
 
@@ -61,7 +72,17 @@ public class UploadController {
 
     @PostMapping("/showDetail")
     public UploadDTO showDetail(@RequestBody ItemIDDTO itemid){
-        System.out.println(itemid.getItemid());
-        return showUploadService.ShowUploadDetail(itemid.getItemid());
+
+        return showUploadService.ShowUploadDetail(itemid);
+    }
+
+    @PostMapping("/delete")
+    public void deleteUpload(@RequestBody ItemIDDTO itemid){
+        uploadService.deleteUpload(itemid);
+    }
+
+    @PostMapping("/favor")
+    public void favorApply(@RequestBody FavorDTO favorDTO){
+        uploadService.favorApply(favorDTO);
     }
 }

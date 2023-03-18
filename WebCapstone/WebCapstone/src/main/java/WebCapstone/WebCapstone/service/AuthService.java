@@ -30,7 +30,6 @@ public class AuthService {
 
     private boolean checkPassword(SignupDTO member){
         String password = member.getPwd();
-        System.out.println("입력하신 비밀번호 자리수: " + password.length());
         if (password.length()<=4){
             return false;
         }
@@ -59,7 +58,6 @@ public class AuthService {
             return ResponseDTO.setFailed("비밀번호가 너무 짧아요.");
         }
         MemberEntity userEntity = new MemberEntity(dto);
-        System.out.println("ok");
 
         //비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(Pwd);
@@ -88,14 +86,10 @@ public class AuthService {
             memberEntity = memberRepository.findByid(id);
             //잘못된 아이디
             if(memberEntity == null){
-                System.out.println("here1");
                 return ResponseDTO.setFailed("로그인 실패");
             }
             //잘못된 비밀번호
             if(!passwordEncoder.matches(pwd, memberEntity.getPwd())){
-                System.out.println(pwd);
-                System.out.println(memberEntity.getPwd());
-                System.out.println("here2");
                 return ResponseDTO.setFailed("로그인 실패");
             }
         }catch(Exception e){
@@ -105,7 +99,6 @@ public class AuthService {
 
         memberEntity.setPwd("");
         String token = tokenProvider.create(memberEntity.getNickname());
-        System.out.println("...");
         int exprTime = 3600000;
 
         SignInResponseDTO signInResponseDTO = new SignInResponseDTO(token, exprTime, memberEntity); // 토큰 만료시간 맴버 정보

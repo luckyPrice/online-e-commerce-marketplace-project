@@ -12,19 +12,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="chat")
-@Table(name ="chat")
-public class ChatEntity {
+@Entity(name="chatinfo")
+@Table(name ="chatinfo")
+public class ChatInfo {
     @Id
-    private int id;
+    private String id;
+
     private String senduser;
+
     private String receiveuser;
 
     private String chattitle;
-    private String message;
-    private String date;
 
     private int notread;
-
-
 }

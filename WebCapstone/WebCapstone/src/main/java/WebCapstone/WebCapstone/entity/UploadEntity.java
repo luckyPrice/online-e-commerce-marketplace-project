@@ -32,6 +32,14 @@ public class UploadEntity {
 
     private String URL;
 
+    private int view;
+
+    private int favor;
+
+    private String uploadtime;
+
+    private String detailcategory;
+
     public UploadEntity(UploadDTO dto){
         this.memberid = dto.getMemberid();
         this.category = dto.getCategory();
@@ -41,7 +49,10 @@ public class UploadEntity {
         this.maintext = dto.getMaintext();
         this.itemprice = dto.getItemprice();
         this.URL = dto.getURL();
-
+        this.view = dto.getView();
+        this.favor = dto.getFavor();
+        this.uploadtime = dto.getUploadtime();
+        this.detailcategory = dto.getDetailcategory();
     }
 
 }

@@ -26,7 +26,6 @@ public class ChatRoomController {
     @PostMapping("/create")
     @ResponseBody
     public ChatDTO saveChat(@RequestBody ChatDTO chatDTO){
-        System.out.println(chatDTO);
         return chatService.chatsave(chatDTO);
     }
 
@@ -34,11 +33,6 @@ public class ChatRoomController {
     @PostMapping("/getmessage")
     @ResponseBody
     public List<ChatDTO> getAllMessage(@RequestBody ChatDTO chatDTO){
-        System.out.println(chatDTO);
-
-
-        System.out.println("---------------------------------");
-        //chatService.getAllMessage(chatRoomDTO);
         return chatService.getAllMessage(chatDTO);
     }
 
@@ -46,20 +40,15 @@ public class ChatRoomController {
     @PostMapping("/getchatroom")
     @ResponseBody
     public Set<MyChatDTO> getMyChatRoomInfo(@RequestBody NicknameDTO nickname){
-
         return chatService.findMyChatRoom(nickname.getNickname());
     }
 
 
-
-    /*@PostMapping("/find/{username}")
+    @PostMapping("/chatcount")
     @ResponseBody
-    public List<ChatRoomDTO> roomInfo(
-            Model model,
-            @PathVariable String username){
-        return chatService.findBy
+    public int ChatCount(@RequestBody NicknameDTO nickname){
+        return chatService.checkChatCount(nickname.getNickname());
     }
-    )*/
 
 
 
