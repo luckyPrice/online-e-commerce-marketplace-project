@@ -65,7 +65,6 @@ public class UploadController {
 
     @GetMapping("/UploadShow")// 업로드 기능
     public List<UploadDTO> ShowUpload(){
-        System.out.println(showUploadService.ShowUpload());
         return showUploadService.ShowUpload();
 
 
