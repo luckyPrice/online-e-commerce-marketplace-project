@@ -2,11 +2,14 @@ package WebCapstone.WebCapstone.service;
 
 
 import WebCapstone.WebCapstone.DTO.ChatDTO;
+import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.MyChatDTO;
 import WebCapstone.WebCapstone.entity.ChatEntity;
 import WebCapstone.WebCapstone.entity.ChatInfo;
+import WebCapstone.WebCapstone.entity.UploadEntity;
 import WebCapstone.WebCapstone.repository.ChatInfoRepository;
 import WebCapstone.WebCapstone.repository.ChatRepository;
+import WebCapstone.WebCapstone.repository.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class ChatService {
 
     @Autowired
     ChatInfoRepository chatInfoRepository;
+
+    @Autowired
+    UploadRepository uploadRepository;
 
 
     public ChatDTO chatsave(ChatDTO chatDTO){
@@ -114,6 +120,21 @@ public class ChatService {
         return count;
     }
 
+
+    public void deleteChat(ItemIDDTO itemIDDTO){
+        System.out.println(itemIDDTO.getItemid());
+        UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
+        System.out.println(uploadEntity);
+        if(uploadEntity!=null){
+
+
+            chatRepository.deleteBySenduserAndChattitle(uploadEntity.getMemberid(), uploadEntity.getTitle());
+            chatRepository.deleteByReceiveuserAndChattitle(uploadEntity.getMemberid(), uploadEntity.getTitle());
+            chatInfoRepository.deleteByReceiveuserAndChattitle(uploadEntity.getMemberid(), uploadEntity.getTitle());
+            chatInfoRepository.deleteByReceiveuserAndChattitle(uploadEntity.getMemberid(), uploadEntity.getTitle());
+            System.out.println("ok");
+        }
+    }
 
 
 }
