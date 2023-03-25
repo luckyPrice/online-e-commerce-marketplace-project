@@ -6,6 +6,7 @@ import WebCapstone.WebCapstone.DTO.ResponseDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
 import WebCapstone.WebCapstone.service.AwsS3Service;
+import WebCapstone.WebCapstone.service.ChatService;
 import WebCapstone.WebCapstone.service.ShowUploadService;
 import WebCapstone.WebCapstone.service.UploadService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,6 +34,9 @@ public class UploadController {
 
     @Autowired
     AwsS3Service awsS3Service;
+
+    @Autowired
+    ChatService chatService;
 
 
 
@@ -70,6 +74,11 @@ public class UploadController {
 
     }
 
+    @PostMapping("/favorRequest")
+    public List<UploadDTO> favorUpload(@RequestBody FavorDTO favorDTO){
+        return showUploadService.favorUpload(favorDTO);
+    }
+
     @PostMapping("/showDetail")
     public UploadDTO showDetail(@RequestBody ItemIDDTO itemid){
 
@@ -78,7 +87,12 @@ public class UploadController {
 
     @PostMapping("/delete")
     public void deleteUpload(@RequestBody ItemIDDTO itemid){
-        uploadService.deleteUpload(itemid);
+        System.out.println(itemid);
+        showUploadService.deleteFavor(itemid); // 해당 게시물에 찜해 놓은 유저들 모두 삭제
+        chatService.deleteChat(itemid); // 해당 게시물과 관련된 채팅 모두 삭제
+        uploadService.deleteUpload(itemid); // 해당 게시물 직접 삭제
+
+
     }
 
     @PostMapping("/favor")

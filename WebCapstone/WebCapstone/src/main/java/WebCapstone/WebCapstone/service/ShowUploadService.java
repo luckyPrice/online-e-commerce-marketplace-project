@@ -1,9 +1,6 @@
 package WebCapstone.WebCapstone.service;
 
-import WebCapstone.WebCapstone.DTO.ItemIDDTO;
-import WebCapstone.WebCapstone.DTO.ResponseDTO;
-import WebCapstone.WebCapstone.DTO.SignInDTO;
-import WebCapstone.WebCapstone.DTO.SignInResponseDTO;
+import WebCapstone.WebCapstone.DTO.*;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
 import WebCapstone.WebCapstone.entity.FavorEntity;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 //서버에 올린거 메인화면에 보여지게 만들어주는 서비스
 
@@ -54,7 +52,7 @@ public class ShowUploadService {
     }
 
     public UploadDTO ShowUploadDetail(ItemIDDTO itemIDDTO) {
-        UploadEntity uploadEntity = uploadRepository.findByitemid(itemIDDTO.getItemid());
+        UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
         uploadEntity.setView(uploadEntity.getView()+1);
         uploadRepository.save(uploadEntity);
         boolean favorcheck = false;
@@ -79,5 +77,46 @@ public class ShowUploadService {
             return uploadDTO;
         }
         return null;
+    }
+
+    public void deleteFavor(ItemIDDTO itemIDDTO){
+        System.out.println(itemIDDTO);
+        UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
+        FavorEntity favorEntity = favorRepository.findBySenduserAndReceiveuserAndTitle(itemIDDTO.getCurrentuser(),
+                uploadEntity.getMemberid(), uploadEntity.getTitle());
+        System.out.println(favorEntity);
+        if(favorEntity!=null){
+            favorRepository.deleteById(favorEntity.getId());
+            System.out.println("input");
+        }
+
+    }
+
+    public List<UploadDTO> favorUpload(FavorDTO favorDTO){
+        System.out.println(favorDTO);
+        List<FavorEntity> favorEntity = favorRepository.findAll();
+        List<UploadDTO> uploadDTOS = new ArrayList<>();
+        for(var i = 0 ; i < favorRepository.count(); i++){
+            if(Objects.equals(favorEntity.get(i).getSenduser(), favorDTO.getNickname())){
+                UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitle(favorEntity.get(i).getReceiveuser(), favorEntity.get(i).getTitle());
+                UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
+                        .itemid(uploadEntity.getItemid())
+                        .itemname(uploadEntity.getItemname())
+                        .category(uploadEntity.getCategory())
+                        .itemprice(uploadEntity.getItemprice())
+                        .title(uploadEntity.getTitle())
+                        .maintext(uploadEntity.getMaintext())
+                        .URL(uploadEntity.getURL())
+                        .view(uploadEntity.getView())
+                        .favor(uploadEntity.getFavor())
+                        .uploadtime(uploadEntity.getUploadtime())
+                        .favorcheck(false)
+                        .build();
+                System.out.println("업로드" + uploadDTO);
+                uploadDTOS.add(uploadDTO);
+            }
+        }
+        return uploadDTOS;
+
     }
 }

@@ -8,6 +8,7 @@ import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
 import WebCapstone.WebCapstone.entity.FavorEntity;
 import WebCapstone.WebCapstone.entity.UploadEntity;
+import WebCapstone.WebCapstone.repository.ChatRepository;
 import WebCapstone.WebCapstone.repository.FavorRepository;
 import WebCapstone.WebCapstone.repository.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class UploadService {
     @Autowired
     FavorRepository favorRepository;
 
+    @Autowired
+    ChatRepository chatRepository;
+
 
 
     public ResponseDTO<UploadResponseDTO> Upload(UploadDTO dto){
@@ -42,7 +46,7 @@ public class UploadService {
 
 
         try{
-            while(uploadRepository.findByitemid(itemid)!=null){
+            while(uploadRepository.findByItemid(itemid)!=null){
                 itemid++;
             }
             dto.setItemid(itemid);
@@ -88,12 +92,15 @@ public class UploadService {
         return ResponseDTO.setSuccess("상품이 업로드 되었습니다.", null);
     }
 
+
     public void deleteUpload(ItemIDDTO itemIDDTO){
         uploadRepository.deleteByItemid(itemIDDTO.getItemid());
+
+
     }
 
     public void favorApply(FavorDTO favorDTO){
-        UploadEntity uploadEntity = uploadRepository.findByitemid(favorDTO.getItemid());
+        UploadEntity uploadEntity = uploadRepository.findByItemid(favorDTO.getItemid());
         int count = 1;
         if(uploadEntity!=null){
             FavorEntity favor = favorRepository.findBySenduserAndReceiveuserAndTitle(favorDTO.getNickname(), uploadEntity.getMemberid(), uploadEntity.getTitle());

@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UploadRepository extends JpaRepository<UploadEntity, String> {
 
-    public UploadEntity findByitemid(int itemid);
+    public UploadEntity findByItemid(int itemid);
     @Transactional
     public void deleteByItemid(int itemid);
+
+    public UploadEntity findByMemberidAndTitle(String memberid, String title);
 
 }
