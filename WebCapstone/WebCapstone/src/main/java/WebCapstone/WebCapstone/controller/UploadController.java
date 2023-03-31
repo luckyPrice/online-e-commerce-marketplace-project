@@ -49,7 +49,8 @@ public class UploadController {
             , @RequestParam(value="title", required=false) String title
             , @RequestParam(value="maintext", required=false) String maintext
             , @RequestParam(value="itemprice", required=false) String itemprice
-            ,@RequestParam(value="detailcategory", required=false)String detailcategory) throws IOException {
+            , @RequestParam(value="detailcategory", required=false) String detailcategory
+            , @RequestParam(value="purpose", required=false) String purpose) throws IOException {
         String URL = awsS3Service.uploadFile(files);
 
         StringBuffer stringBuffer = new StringBuffer();
@@ -59,7 +60,7 @@ public class UploadController {
         simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
         UploadDTO uploadDTO = UploadDTO.builder().memberid(memberid).category(category)
                         .itemname(itemname).itemid(Integer.parseInt(itemid)).title(title).maintext(maintext)
-                        .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
+                        .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).purpose(purpose).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
         ResponseDTO<UploadResponseDTO> result = uploadService.Upload(uploadDTO);
         return result;
 
