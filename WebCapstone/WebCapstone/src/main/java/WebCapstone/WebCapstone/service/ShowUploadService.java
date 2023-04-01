@@ -36,6 +36,7 @@ public class ShowUploadService {
                     .itemid(uploadEntities.get(i).getItemid())
                     .itemname(uploadEntities.get(i).getItemname())
                     .category(uploadEntities.get(i).getCategory())
+                    .detailcategory(uploadEntities.get(i).getDetailcategory())
                     .itemprice(uploadEntities.get(i).getItemprice())
                     .title(uploadEntities.get(i).getTitle())
                     .maintext(uploadEntities.get(i).getMaintext())
@@ -43,6 +44,7 @@ public class ShowUploadService {
                     .view(uploadEntities.get(i).getView())
                     .favor(uploadEntities.get(i).getFavor())
                     .uploadtime(uploadEntities.get(i).getUploadtime())
+                    .purpose(uploadEntities.get(i).getPurpose())
                     .build();
             uploadDTOS.add(uploadDTO);
         }
@@ -65,6 +67,7 @@ public class ShowUploadService {
                     .itemid(uploadEntity.getItemid())
                     .itemname(uploadEntity.getItemname())
                     .category(uploadEntity.getCategory())
+                    .detailcategory(uploadEntity.getDetailcategory())
                     .itemprice(uploadEntity.getItemprice())
                     .title(uploadEntity.getTitle())
                     .maintext(uploadEntity.getMaintext())
@@ -73,6 +76,7 @@ public class ShowUploadService {
                     .favor(uploadEntity.getFavor())
                     .uploadtime(uploadEntity.getUploadtime())
                     .favorcheck(favorcheck)
+                    .purpose(uploadEntity.getPurpose())
                     .build();
             return uploadDTO;
         }
