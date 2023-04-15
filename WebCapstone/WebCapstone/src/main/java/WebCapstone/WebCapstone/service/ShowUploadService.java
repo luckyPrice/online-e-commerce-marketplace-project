@@ -43,6 +43,7 @@ public class ShowUploadService {
                     .view(uploadEntities.get(i).getView())
                     .favor(uploadEntities.get(i).getFavor())
                     .uploadtime(uploadEntities.get(i).getUploadtime())
+                    .purpose(uploadEntities.get(i).getPurpose())
                     .build();
             uploadDTOS.add(uploadDTO);
         }
@@ -50,6 +51,8 @@ public class ShowUploadService {
         return uploadDTOS;
 
     }
+
+
 
     public UploadDTO ShowUploadDetail(ItemIDDTO itemIDDTO) {
         UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
@@ -73,6 +76,30 @@ public class ShowUploadService {
                     .favor(uploadEntity.getFavor())
                     .uploadtime(uploadEntity.getUploadtime())
                     .favorcheck(favorcheck)
+                    .purpose(uploadEntity.getPurpose())
+                    .build();
+            return uploadDTO;
+        }
+        return null;
+    }
+
+    public UploadDTO OrderUploadDetail(DetailDTO detailDTO) {
+        UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getSeller(), detailDTO.getObject());
+
+        if(uploadEntity != null){
+            UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
+                    .itemid(uploadEntity.getItemid())
+                    .itemname(uploadEntity.getItemname())
+                    .category(uploadEntity.getCategory())
+                    .itemprice(uploadEntity.getItemprice())
+                    .title(uploadEntity.getTitle())
+                    .maintext(uploadEntity.getMaintext())
+                    .URL(uploadEntity.getURL())
+                    .view(uploadEntity.getView())
+                    .favor(uploadEntity.getFavor())
+                    .uploadtime(uploadEntity.getUploadtime())
+                    .favorcheck(true)
+                    .purpose(uploadEntity.getPurpose())
                     .build();
             return uploadDTO;
         }

@@ -26,5 +26,6 @@ public class ChatEntity {
 
     private int notread;
 
+    private String type;
 
 }

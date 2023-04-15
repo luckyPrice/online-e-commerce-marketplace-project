@@ -28,6 +28,8 @@ public class MemberEntity {
     private String sex;
     private String address;
 
+    private int cash;
+
     public MemberEntity(SignupDTO dto){
         this.username = dto.getUsername();
         this.id = dto.getId();
@@ -37,6 +39,6 @@ public class MemberEntity {
         this.phonenumber = dto.getPhonenumber();
         this.sex = dto.getSex();
         this.address = dto.getAddress();
-
+        this.cash = 0;
     }
 }

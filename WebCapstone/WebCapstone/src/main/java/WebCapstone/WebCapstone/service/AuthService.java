@@ -1,9 +1,6 @@
 package WebCapstone.WebCapstone.service;
 
-import WebCapstone.WebCapstone.DTO.ResponseDTO;
-import WebCapstone.WebCapstone.DTO.SignInDTO;
-import WebCapstone.WebCapstone.DTO.SignInResponseDTO;
-import WebCapstone.WebCapstone.DTO.SignupDTO;
+import WebCapstone.WebCapstone.DTO.*;
 import WebCapstone.WebCapstone.entity.MemberEntity;
 import WebCapstone.WebCapstone.filter.JwtAuthencationFilter;
 import WebCapstone.WebCapstone.repository.MemberRepository;
@@ -103,5 +100,16 @@ public class AuthService {
 
         SignInResponseDTO signInResponseDTO = new SignInResponseDTO(token, exprTime, memberEntity); // 토큰 만료시간 맴버 정보
         return ResponseDTO.setSuccess("로그인 성공", signInResponseDTO);
+    }
+
+    public MemberInfoDTO getMemberInfo(NicknameDTO nicknameDTO){
+        MemberEntity memberEntity = memberRepository.findByNickname(nicknameDTO.getNickname());
+        System.out.println(memberEntity);
+        if(memberEntity != null){
+            MemberInfoDTO memberInfoDTO = new MemberInfoDTO(memberEntity.getUsername(), memberEntity.getNickname(), memberEntity.getPhonenumber(),
+                    memberEntity.getSex(), memberEntity.getAddress(), memberEntity.getCash());
+            return memberInfoDTO;
+        }
+        return null;
     }
 }

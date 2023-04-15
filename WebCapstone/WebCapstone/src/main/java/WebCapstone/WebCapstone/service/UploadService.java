@@ -41,6 +41,7 @@ public class UploadService {
         int itemprice = dto.getItemprice();
         int itemid = 1;
         String detiaicategory = dto.getDetailcategory();
+        String purpose = dto.getPurpose();
         String URL = dto.getURL();
 
 
