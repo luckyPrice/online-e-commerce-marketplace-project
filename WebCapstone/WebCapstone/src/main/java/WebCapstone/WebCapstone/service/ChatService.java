@@ -53,9 +53,13 @@ public class ChatService {
             chatInfoRepository.save(chatInfo1);
             chatInfoRepository.save(chatInfo2);
         }
+        if (chatRepository.findBySenduserAndReceiveuserAndChattitleAndMessageAndType(chatDTO.getSenduser(), chatDTO.getReceiveuser(), chatDTO.getChattitle(), chatDTO.getMessage(), chatDTO.getType()) != null) {
+
+            return null;
+        }
         ChatEntity chatEntity = new ChatEntity(id, chatDTO.getSenduser(), chatDTO.getReceiveuser(),
                 chatDTO.getChattitle(),
-                chatDTO.getMessage(), chatDTO.getDate(), 1);
+                chatDTO.getMessage(), chatDTO.getDate(), 1, chatDTO.getType());
         chatRepository.save(chatEntity);
 
 
@@ -69,18 +73,19 @@ public class ChatService {
         List<ChatDTO> chatDTOS = new ArrayList<>();
 
         List<ChatEntity> chat = chatRepository.findAll();
+        System.out.println(chatDTO);
         ChatInfo chatInfo = chatInfoRepository.findBySenduserAndReceiveuserAndChattitle(chatDTO.getReceiveuser(), chatDTO.getSenduser(), chatDTO.getChattitle());
         chatInfo.setNotread(0);
         chatInfoRepository.save(chatInfo);
         for(var i = 0 ; i < chatRepository.count(); i ++){
             if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getSenduser()) && Objects.equals(chat.get(i).getReceiveuser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getChattitle(), chatDTO.getChattitle())){
                 ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle()).message(chat.get(i).getMessage())
-                                .date(chat.get(i).getDate()).notread(chat.get(i).getNotread()).build();
+                                .date(chat.get(i).getDate()).notread(chat.get(i).getNotread()).type(chat.get(i).getType()).build();
                 chatDTOS.add(chatDTO1);
             }
             else if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getSenduser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getChattitle(), chatDTO.getChattitle())){
                 ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle()).message(chat.get(i).getMessage())
-                        .date(chat.get(i).getDate()).notread(0).build();
+                        .date(chat.get(i).getDate()).notread(0).type(chat.get(i).getType()).build();
                 chatDTOS.add(chatDTO1);
                 chat.get(i).setNotread(0);
                 chatRepository.save(chat.get(i));

@@ -11,6 +11,8 @@ import java.util.List;
 public interface ChatRepository extends JpaRepository<ChatEntity, String> {
 
     public ChatEntity findByid(int id);
+
+    public ChatEntity findBySenduserAndReceiveuserAndChattitleAndMessageAndType(String senduser, String receiveuser, String chattitle, String message, String type);
     @Transactional
     public void deleteBySenduserAndChattitle(String senduser, String chattitle);
 

@@ -1,5 +1,7 @@
 package WebCapstone.WebCapstone.DTO;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,14 +10,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignupDTO {
-    private String username;
 
+    @NotEmpty(message = "이름을 입력해주세요")
+    private String username;
+    @Size(min=2, max=100, message = "아이디를 입력해주세요")
     private String id;
     private String pwd;
     private String passwordcheck;
+    @Size(min=2, max=100, message = "사용하실 닉네임을 입력해주세요")
     private String nickname;
+    @NotEmpty(message = "전화번호를 입력해주세요")
     private String phonenumber;
     private String sex;
+    @NotEmpty(message = "주소를 입력해주세요")
     private String address;
 
     public void setUsername(String username) {

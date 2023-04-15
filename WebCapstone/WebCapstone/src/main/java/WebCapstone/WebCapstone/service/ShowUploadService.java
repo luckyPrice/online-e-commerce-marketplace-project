@@ -36,7 +36,6 @@ public class ShowUploadService {
                     .itemid(uploadEntities.get(i).getItemid())
                     .itemname(uploadEntities.get(i).getItemname())
                     .category(uploadEntities.get(i).getCategory())
-                    .detailcategory(uploadEntities.get(i).getDetailcategory())
                     .itemprice(uploadEntities.get(i).getItemprice())
                     .title(uploadEntities.get(i).getTitle())
                     .maintext(uploadEntities.get(i).getMaintext())
@@ -53,6 +52,8 @@ public class ShowUploadService {
 
     }
 
+
+
     public UploadDTO ShowUploadDetail(ItemIDDTO itemIDDTO) {
         UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
         uploadEntity.setView(uploadEntity.getView()+1);
@@ -67,7 +68,6 @@ public class ShowUploadService {
                     .itemid(uploadEntity.getItemid())
                     .itemname(uploadEntity.getItemname())
                     .category(uploadEntity.getCategory())
-                    .detailcategory(uploadEntity.getDetailcategory())
                     .itemprice(uploadEntity.getItemprice())
                     .title(uploadEntity.getTitle())
                     .maintext(uploadEntity.getMaintext())
@@ -76,6 +76,29 @@ public class ShowUploadService {
                     .favor(uploadEntity.getFavor())
                     .uploadtime(uploadEntity.getUploadtime())
                     .favorcheck(favorcheck)
+                    .purpose(uploadEntity.getPurpose())
+                    .build();
+            return uploadDTO;
+        }
+        return null;
+    }
+
+    public UploadDTO OrderUploadDetail(DetailDTO detailDTO) {
+        UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getSeller(), detailDTO.getObject());
+
+        if(uploadEntity != null){
+            UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
+                    .itemid(uploadEntity.getItemid())
+                    .itemname(uploadEntity.getItemname())
+                    .category(uploadEntity.getCategory())
+                    .itemprice(uploadEntity.getItemprice())
+                    .title(uploadEntity.getTitle())
+                    .maintext(uploadEntity.getMaintext())
+                    .URL(uploadEntity.getURL())
+                    .view(uploadEntity.getView())
+                    .favor(uploadEntity.getFavor())
+                    .uploadtime(uploadEntity.getUploadtime())
+                    .favorcheck(true)
                     .purpose(uploadEntity.getPurpose())
                     .build();
             return uploadDTO;

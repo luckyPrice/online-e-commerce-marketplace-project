@@ -10,6 +10,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
 
     public MemberEntity findByid(String id);
 
+    public MemberEntity findByNickname(String nickname);
+
 
 
 }

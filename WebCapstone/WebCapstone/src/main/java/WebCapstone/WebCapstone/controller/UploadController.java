@@ -1,5 +1,6 @@
 package WebCapstone.WebCapstone.controller;
 
+import WebCapstone.WebCapstone.DTO.DetailDTO;
 import WebCapstone.WebCapstone.DTO.FavorDTO;
 import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.ResponseDTO;
@@ -10,7 +11,10 @@ import WebCapstone.WebCapstone.service.ChatService;
 import WebCapstone.WebCapstone.service.ShowUploadService;
 import WebCapstone.WebCapstone.service.UploadService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,7 +45,7 @@ public class UploadController {
 
 
     @RequestMapping(value="Upload", method=RequestMethod.POST)
-    public ResponseDTO<UploadResponseDTO> Upload (HttpServletRequest request, @RequestParam(value="file", required=false) List<MultipartFile> files
+    public ResponseDTO<UploadResponseDTO> Upload (HttpServletRequest request, @Valid UploadDTO uploadDTO, BindingResult bindingResult, @RequestParam(value="file", required=false) List<MultipartFile> files
             , @RequestParam(value="memberid", required=false) String memberid
             , @RequestParam(value="category", required=false) String category
             , @RequestParam(value="itemname", required=false) String itemname
@@ -49,18 +53,45 @@ public class UploadController {
             , @RequestParam(value="title", required=false) String title
             , @RequestParam(value="maintext", required=false) String maintext
             , @RequestParam(value="itemprice", required=false) String itemprice
-            , @RequestParam(value="detailcategory", required=false) String detailcategory
-            , @RequestParam(value="purpose", required=false) String purpose) throws IOException {
-        String URL = awsS3Service.uploadFile(files);
+            , @RequestParam(value="detailcategory", required=false)String detailcategory
+            ,@RequestParam(value="purpose", required=false) String purpose) throws IOException {
+        System.out.println(files);
+        String URL;
+        if(files==null){
+            URL = null;
+        }
+        else{
+            URL = awsS3Service.uploadFile(files);
+        }
+
+
 
         StringBuffer stringBuffer = new StringBuffer();
         Date now = new Date();
 
+
+        if(category.equals("--선택--")) {//데이터검증
+            category="";
+        }
+        if(detailcategory.equals("--선택--")) {//데이터검증
+            detailcategory="";
+        }
+        System.out.println(URL);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
-        UploadDTO uploadDTO = UploadDTO.builder().memberid(memberid).category(category)
-                        .itemname(itemname).itemid(Integer.parseInt(itemid)).title(title).maintext(maintext)
-                        .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).purpose(purpose).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
+        uploadDTO = UploadDTO.builder().memberid(memberid).category(category)
+                .itemname(itemname).itemid(Integer.parseInt(itemid)).title(title).maintext(maintext)
+                .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).purpose(purpose).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
+
+        if(bindingResult.hasErrors()) {//데이터검증
+            System.out.println("Form data has some errors");
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            for(ObjectError error:errors) {
+                System.out.println(error.getDefaultMessage());
+            }
+            return ResponseDTO.setFailed("모든 상품의 정보를 정확하게 입력해주세요");
+
+        }
         ResponseDTO<UploadResponseDTO> result = uploadService.Upload(uploadDTO);
         return result;
 
@@ -75,6 +106,8 @@ public class UploadController {
 
     }
 
+
+
     @PostMapping("/favorRequest")
     public List<UploadDTO> favorUpload(@RequestBody FavorDTO favorDTO){
         return showUploadService.favorUpload(favorDTO);
@@ -84,6 +117,12 @@ public class UploadController {
     public UploadDTO showDetail(@RequestBody ItemIDDTO itemid){
 
         return showUploadService.ShowUploadDetail(itemid);
+    }
+
+    @PostMapping("/orderDetail")
+    public UploadDTO orderDetail(@RequestBody DetailDTO detailDTO){
+
+        return showUploadService.OrderUploadDetail(detailDTO);
     }
 
     @PostMapping("/delete")
