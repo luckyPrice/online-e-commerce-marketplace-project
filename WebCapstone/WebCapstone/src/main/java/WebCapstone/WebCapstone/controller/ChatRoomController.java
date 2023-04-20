@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +29,11 @@ public class ChatRoomController {
     @PostMapping("/create")
     @ResponseBody
     public ChatDTO saveChat(@RequestBody ChatDTO chatDTO){
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+        chatDTO.setDate(stringBuffer.toString());
         return chatService.chatsave(chatDTO);
     }
 

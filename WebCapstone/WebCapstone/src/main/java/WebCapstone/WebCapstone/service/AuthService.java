@@ -112,4 +112,22 @@ public class AuthService {
         }
         return null;
     }
+
+    public void UpdateCash(CashDTO cashDTO){
+        MemberEntity memberEntity = memberRepository.findByNickname(cashDTO.getNickname());
+        System.out.println(memberEntity);
+        if(memberEntity != null){
+            memberEntity.setCash(memberEntity.getCash() + cashDTO.getCash());
+            memberRepository.save(memberEntity);
+        }
+    }
+
+    public void ReduceCash(CashDTO cashDTO){
+        MemberEntity memberEntity = memberRepository.findByNickname(cashDTO.getNickname());
+        System.out.println(memberEntity);
+        if(memberEntity != null){
+            memberEntity.setCash(memberEntity.getCash() - cashDTO.getCash());
+            memberRepository.save(memberEntity);
+        }
+    }
 }

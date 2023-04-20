@@ -40,9 +40,10 @@ public class UploadService {
         String title = dto.getTitle();
         int itemprice = dto.getItemprice();
         int itemid = 1;
-        String detiaicategory = dto.getDetailcategory();
+        String detiailcategory = dto.getDetailcategory();
         String purpose = dto.getPurpose();
         String URL = dto.getURL();
+        String status = dto.getStatus();
 
 
 
@@ -135,5 +136,10 @@ public class UploadService {
 
         }
 
+    }
+    public void changeStatus(ItemIDDTO itemIDDTO){
+        UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
+        uploadEntity.setStatus(itemIDDTO.getCurrentuser());
+        uploadRepository.save(uploadEntity);
     }
 }
