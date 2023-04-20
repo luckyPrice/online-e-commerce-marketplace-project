@@ -3,6 +3,7 @@ package WebCapstone.WebCapstone.controller;
 import WebCapstone.WebCapstone.DTO.*;
 //import WebCapstone.WebCapstone.service.AuthService;
 import WebCapstone.WebCapstone.service.AuthService;
+import WebCapstone.WebCapstone.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,9 @@ public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    OrderService orderService;
 
     @PostMapping("/signUp") // 회원가입 기능
     public ResponseDTO<?> signUp(@Valid @RequestBody SignupDTO requestBody, BindingResult bindingResult){
@@ -46,6 +50,21 @@ public class AuthController {
     @PostMapping("/getAuth") // 로그인 기능
     public MemberInfoDTO getAuth(@RequestBody NicknameDTO nickNameDTO){
         return authService.getMemberInfo(nickNameDTO);
+        //return result;
+
+    }
+
+    @PostMapping("/UpdateCash") // 로그인 기능
+    public void UpdateCash(@RequestBody CashDTO cashDTO){
+        authService.UpdateCash(cashDTO);
+        //return result;
+
+    }
+
+    @PostMapping("/ReduceCash") // 로그인 기능
+    public void ReduceCash(@RequestBody CashDTO cashDTO){
+        authService.ReduceCash(cashDTO);
+
         //return result;
 
     }

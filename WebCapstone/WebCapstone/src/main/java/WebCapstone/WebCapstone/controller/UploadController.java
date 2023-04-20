@@ -81,7 +81,7 @@ public class UploadController {
         simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
         uploadDTO = UploadDTO.builder().memberid(memberid).category(category)
                 .itemname(itemname).itemid(Integer.parseInt(itemid)).title(title).maintext(maintext)
-                .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).purpose(purpose).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).build();
+                .itemprice(Integer.parseInt(itemprice)).detailcategory(detailcategory).purpose(purpose).URL(URL).view(0).favor(0).uploadtime(stringBuffer.toString()).status("판매중").build();
 
         if(bindingResult.hasErrors()) {//데이터검증
             System.out.println("Form data has some errors");
@@ -138,5 +138,11 @@ public class UploadController {
     @PostMapping("/favor")
     public void favorApply(@RequestBody FavorDTO favorDTO){
         uploadService.favorApply(favorDTO);
+    }
+
+    @PostMapping("/changeStatus")
+    public void changeStatus(@RequestBody ItemIDDTO itemIDDTO){
+        System.out.println(itemIDDTO);
+        uploadService.changeStatus(itemIDDTO);
     }
 }

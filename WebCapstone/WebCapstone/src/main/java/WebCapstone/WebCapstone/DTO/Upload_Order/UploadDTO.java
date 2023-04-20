@@ -43,10 +43,12 @@ public class UploadDTO {
 
     private boolean favorcheck = false;
 
+    private String status;
+
 
 
     @Builder
-    public UploadDTO(String memberid, String category, String detailcategory, String itemname, int itemid, String title, String maintext, int itemprice, String purpose,String URL, int view, int favor, String uploadtime, boolean favorcheck){
+    public UploadDTO(String memberid, String category, String detailcategory, String itemname, int itemid, String title, String maintext, int itemprice, String purpose,String URL, int view, int favor, String uploadtime, boolean favorcheck, String status){
         this.memberid = memberid;
         this.category = category;
         this.detailcategory = detailcategory;
@@ -61,6 +63,7 @@ public class UploadDTO {
         this.uploadtime = uploadtime;
         this.purpose = purpose;
         this.favorcheck = favorcheck;
+        this.status = status;
 
     }
 
