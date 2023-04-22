@@ -29,6 +29,8 @@ public class ForumEntity {
 
     private String date;
 
+    private String title;
+
 
     public ForumEntity(ForumDTO dto){
         this.commentid = dto.getCommentid();
@@ -38,5 +40,6 @@ public class ForumEntity {
         this.writter = dto.getWritter();
         this.target = dto.getTarget();
         this.date = dto.getDate();
+        this.title = dto.getTitle();
     }
 }
