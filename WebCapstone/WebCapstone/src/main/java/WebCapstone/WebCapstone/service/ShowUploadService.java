@@ -13,9 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 //서버에 올린거 메인화면에 보여지게 만들어주는 서비스
 
@@ -153,6 +151,76 @@ public class ShowUploadService {
             }
         }
         return uploadDTOS;
+
+    }
+
+    public Set<UploadDTO> recommendUpload(ItemIDDTO itemIDDTO){
+        List<UploadEntity> uploadEntities = uploadRepository.findByCategory(itemIDDTO.getCurrentuser());
+        System.out.println(uploadEntities.size());
+        int num = 0;
+        Set<UploadDTO> uploadDTOS = new HashSet<>();
+
+
+
+        if(uploadEntities.size() > 9) {
+
+            while (uploadDTOS.size() < 9) {
+
+                num = (int) (Math.random() * (uploadEntities.size()));
+                if(num != itemIDDTO.getItemid()){ // 자기 자신은 추천하면 안됨
+                    UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntities.get(num).getMemberid())
+                            .itemid(uploadEntities.get(num).getItemid())
+                            .itemname(uploadEntities.get(num).getItemname())
+                            .category(uploadEntities.get(num).getCategory())
+                            .detailcategory(uploadEntities.get(num).getDetailcategory())
+                            .itemprice(uploadEntities.get(num).getItemprice())
+                            .title(uploadEntities.get(num).getTitle())
+                            .maintext(uploadEntities.get(num).getMaintext())
+                            .URL(uploadEntities.get(num).getURL())
+                            .view(uploadEntities.get(num).getView())
+                            .favor(uploadEntities.get(num).getFavor())
+                            .uploadtime(uploadEntities.get(num).getUploadtime())
+                            .favorcheck(false)
+                            .purpose(uploadEntities.get(num).getPurpose())
+                            .status(uploadEntities.get(num).getStatus())
+                            .build();
+                    uploadDTOS.add(uploadDTO);
+                }
+
+
+            }
+
+        }
+        else {
+            for(var i = 0 ; i < uploadEntities.size(); i++) {
+                if(itemIDDTO.getItemid() != uploadEntities.get(i).getItemid()){
+                    UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntities.get(i).getMemberid())
+                            .itemid(uploadEntities.get(i).getItemid())
+                            .itemname(uploadEntities.get(i).getItemname())
+                            .category(uploadEntities.get(i).getCategory())
+                            .detailcategory(uploadEntities.get(i).getDetailcategory())
+                            .itemprice(uploadEntities.get(i).getItemprice())
+                            .title(uploadEntities.get(i).getTitle())
+                            .maintext(uploadEntities.get(i).getMaintext())
+                            .URL(uploadEntities.get(i).getURL())
+                            .view(uploadEntities.get(i).getView())
+                            .favor(uploadEntities.get(i).getFavor())
+                            .uploadtime(uploadEntities.get(i).getUploadtime())
+                            .favorcheck(false)
+                            .purpose(uploadEntities.get(i).getPurpose())
+                            .status(uploadEntities.get(i).getStatus())
+                            .build();
+                    uploadDTOS.add(uploadDTO);
+                }
+
+            }
+        }
+            System.out.println(uploadDTOS);
+            return uploadDTOS;
+
+
+
+
 
     }
 }

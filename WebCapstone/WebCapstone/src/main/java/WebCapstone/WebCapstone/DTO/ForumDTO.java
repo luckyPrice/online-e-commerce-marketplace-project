@@ -23,6 +23,8 @@ public class ForumDTO {
 
     private String date;
 
+    private String title;
+
     public int getItemid() {
         return itemid;
     }
@@ -77,5 +79,13 @@ public class ForumDTO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

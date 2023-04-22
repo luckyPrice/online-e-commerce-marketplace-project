@@ -23,6 +23,7 @@ import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -144,5 +145,11 @@ public class UploadController {
     public void changeStatus(@RequestBody ItemIDDTO itemIDDTO){
         System.out.println(itemIDDTO);
         uploadService.changeStatus(itemIDDTO);
+    }
+
+    @PostMapping("/recommend")
+    public Set<UploadDTO> recommendUpload(@RequestBody ItemIDDTO itemIDDTO){
+        System.out.println(itemIDDTO);
+        return showUploadService.recommendUpload(itemIDDTO);
     }
 }
