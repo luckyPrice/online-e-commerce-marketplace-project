@@ -34,6 +34,7 @@ public class ChatRoomController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
         simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
         chatDTO.setDate(stringBuffer.toString());
+        System.out.println("chatDto는" + chatDTO);
         return chatService.chatsave(chatDTO);
     }
 

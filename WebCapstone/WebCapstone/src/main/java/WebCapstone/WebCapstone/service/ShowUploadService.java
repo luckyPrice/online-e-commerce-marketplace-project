@@ -30,22 +30,28 @@ public class ShowUploadService {
         List<UploadDTO> uploadDTOS = new ArrayList<>();
         List<UploadEntity> uploadEntities = uploadRepository.findAll();
         for(var i = 0 ; i < uploadRepository.count(); i++){
-            UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntities.get(i).getMemberid())
-                    .itemid(uploadEntities.get(i).getItemid())
-                    .itemname(uploadEntities.get(i).getItemname())
-                    .category(uploadEntities.get(i).getCategory())
-                    .detailcategory(uploadEntities.get(i).getDetailcategory())
-                    .itemprice(uploadEntities.get(i).getItemprice())
-                    .title(uploadEntities.get(i).getTitle())
-                    .maintext(uploadEntities.get(i).getMaintext())
-                    .URL(uploadEntities.get(i).getURL())
-                    .view(uploadEntities.get(i).getView())
-                    .favor(uploadEntities.get(i).getFavor())
-                    .uploadtime(uploadEntities.get(i).getUploadtime())
-                    .purpose(uploadEntities.get(i).getPurpose())
-                    .status(uploadEntities.get(i).getStatus())
-                    .build();
-            uploadDTOS.add(uploadDTO);
+            if(!Objects.equals(uploadEntities.get(i).getStatus(), "판매 완료")){
+                UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntities.get(i).getMemberid())
+                        .itemid(uploadEntities.get(i).getItemid())
+                        .itemname(uploadEntities.get(i).getItemname())
+                        .category(uploadEntities.get(i).getCategory())
+                        .detailcategory(uploadEntities.get(i).getDetailcategory())
+                        .itemprice(uploadEntities.get(i).getItemprice())
+                        .title(uploadEntities.get(i).getTitle())
+                        .maintext(uploadEntities.get(i).getMaintext())
+                        .URL(uploadEntities.get(i).getURL())
+                        .view(uploadEntities.get(i).getView())
+                        .favor(uploadEntities.get(i).getFavor())
+                        .uploadtime(uploadEntities.get(i).getUploadtime())
+                        .purpose(uploadEntities.get(i).getPurpose())
+                        .status(uploadEntities.get(i).getStatus())
+                        .build();
+                uploadDTOS.add(uploadDTO);
+            }
+            else{
+                System.out.println("제외된 애는" + uploadEntities.get(i));
+            }
+
         }
 
         return uploadDTOS;
@@ -87,6 +93,9 @@ public class ShowUploadService {
 
     public UploadDTO OrderUploadDetail(DetailDTO detailDTO) {
         UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getSeller(), detailDTO.getObject());
+        if(uploadEntity == null){
+            uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getBuyer(), detailDTO.getObject());
+        }
 
         if(uploadEntity != null){
             UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())

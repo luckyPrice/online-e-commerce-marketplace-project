@@ -11,6 +11,8 @@ import WebCapstone.WebCapstone.repository.ChatInfoRepository;
 import WebCapstone.WebCapstone.repository.ChatRepository;
 import WebCapstone.WebCapstone.repository.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -40,8 +42,10 @@ public class ChatService {
         catch(Exception e){
             System.out.println("오류");
         }
+        System.out.println(chatDTO);
         List<ChatEntity> chat = chatRepository.findAll();
         ChatInfo chatInfo = chatInfoRepository.findBySenduserAndReceiveuserAndChattitle(chatDTO.getSenduser(), chatDTO.getReceiveuser(), chatDTO.getChattitle());
+        System.out.println(chatInfo);
         if(chatInfo != null){
             int temp = chatInfo.getNotread() + 1;
             chatInfo.setNotread(temp);
@@ -72,7 +76,8 @@ public class ChatService {
     public List<ChatDTO> getAllMessage(ChatDTO chatDTO){
         List<ChatDTO> chatDTOS = new ArrayList<>();
 
-        List<ChatEntity> chat = chatRepository.findAll();
+        //ChatRequest pageRequest = PageRequest.of(0, chatRepository.count(), Sort.by("id").ascending());
+        List<ChatEntity> chat = chatRepository.findAll(Sort.by("date"));
         System.out.println(chatDTO);
         ChatInfo chatInfo = chatInfoRepository.findBySenduserAndReceiveuserAndChattitle(chatDTO.getReceiveuser(), chatDTO.getSenduser(), chatDTO.getChattitle());
         chatInfo.setNotread(0);
@@ -91,6 +96,7 @@ public class ChatService {
                 chatRepository.save(chat.get(i));
             }
         }
+
         return chatDTOS;
 
 
