@@ -19,7 +19,7 @@ public class ChatDTO {
 
     private int notread;
 
-    private String type;
+    private String type = "message";
 
     @Builder
     public ChatDTO(String senduser, String receiveuser, String chattitle, String message, String date, int notread, String type){

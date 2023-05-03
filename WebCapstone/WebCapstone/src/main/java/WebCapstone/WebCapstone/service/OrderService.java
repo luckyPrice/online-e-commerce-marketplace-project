@@ -37,16 +37,40 @@ public class OrderService {
     public OrderEntity getOrder(DetailDTO detailDTO){
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         System.out.println(orderEntity);
-        if(orderEntity != null){
-            return orderEntity;
+        if(orderEntity == null){
+            orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getSeller(), detailDTO.getBuyer(), detailDTO.getObject());
         }
+        if(orderEntity != null){
+
+
+                System.out.println("1");
+                return orderEntity;
+
+
+        }
+
+        System.out.println("3");
         return null;
+    }
+
+    public OrderEntity orderNext(DetailDTO detailDTO){
+
+        System.out.println("orderNext" + detailDTO);
+        OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
+        orderEntity.setStep(orderEntity.getStep() + 1);
+        orderRepository.save(orderEntity);
+
+        return orderEntity;
+
+
+
     }
 
     public OrderEntity Finishbuyer(DetailDTO detailDTO){
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         System.out.println(orderEntity);
         if(orderEntity != null){
+
             orderEntity.setStep(3);
             orderRepository.save(orderEntity);
             return orderEntity;

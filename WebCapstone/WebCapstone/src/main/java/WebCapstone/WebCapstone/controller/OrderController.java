@@ -50,4 +50,12 @@ public class OrderController {
 
         return orderService.Finishseller(detailDTO);
     }
+
+    @PostMapping("/orderchange")
+    @ResponseBody
+    public OrderEntity orderNext(@RequestBody DetailDTO detailDTO){
+
+        return orderService.orderNext(detailDTO);
+
+    }
 }
