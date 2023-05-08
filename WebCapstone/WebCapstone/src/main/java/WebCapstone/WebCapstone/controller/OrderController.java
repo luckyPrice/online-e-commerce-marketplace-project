@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
@@ -37,25 +39,31 @@ public class OrderController {
 
     }
 
-    @PostMapping("/finishBuyer")
+    @GetMapping("/getAllOrder")
     @ResponseBody
-    public OrderEntity FinishBuyer(@RequestBody DetailDTO detailDTO){
+    public List<OrderEntity> getAllOrder(){
 
-        return orderService.Finishbuyer(detailDTO);
+
+        return orderService.getAllOrder();
+
+
     }
 
-    @PostMapping("/finishSeller")
-    @ResponseBody
-    public OrderEntity FinishSeller(@RequestBody DetailDTO detailDTO){
 
-        return orderService.Finishseller(detailDTO);
-    }
 
     @PostMapping("/orderchange")
     @ResponseBody
     public OrderEntity orderNext(@RequestBody DetailDTO detailDTO){
 
         return orderService.orderNext(detailDTO);
+
+    }
+
+    @PostMapping("/ordercancel")
+    @ResponseBody
+    public void orderCancel(@RequestBody DetailDTO detailDTO){
+
+        orderService.deleteOrder(detailDTO);
 
     }
 }

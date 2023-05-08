@@ -8,6 +8,11 @@ import WebCapstone.WebCapstone.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -25,8 +30,15 @@ public class OrderService {
             System.out.println("오류");
         }
         if (orderRepository.findByBuyerAndSellerAndObject(orderDTO.getBuyer(), orderDTO.getSeller(), orderDTO.getObject()) == null){
+            StringBuffer stringBuffer = new StringBuffer();
+            Date now = new Date();
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+            simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+
             OrderEntity orderEntity = new OrderEntity(id, orderDTO.getSeller(), orderDTO.getBuyer(), orderDTO.getObject(), orderDTO.getPrice()
-                    ,orderDTO.getURL(), orderDTO.getAddress(), 1);
+                    ,orderDTO.getURL(), orderDTO.getAddress(), stringBuffer.toString(), 1);
+            System.out.println(orderEntity);
             orderRepository.save(orderEntity);
             return orderEntity;
         }
@@ -38,6 +50,7 @@ public class OrderService {
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         System.out.println(orderEntity);
         if(orderEntity == null){
+
             orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getSeller(), detailDTO.getBuyer(), detailDTO.getObject());
         }
         if(orderEntity != null){
@@ -58,6 +71,7 @@ public class OrderService {
         System.out.println("orderNext" + detailDTO);
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         orderEntity.setStep(orderEntity.getStep() + 1);
+        System.out.println(orderEntity);
         orderRepository.save(orderEntity);
 
         return orderEntity;
@@ -66,30 +80,19 @@ public class OrderService {
 
     }
 
-    public OrderEntity Finishbuyer(DetailDTO detailDTO){
-        OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
-        System.out.println(orderEntity);
-        if(orderEntity != null){
-
-            orderEntity.setStep(3);
-            orderRepository.save(orderEntity);
-            return orderEntity;
-        }
-        return null;
+    public List<OrderEntity> getAllOrder(){
+        List<OrderEntity> orderEntities = orderRepository.findAll();
+        return orderEntities;
     }
 
-    public OrderEntity Finishseller(DetailDTO detailDTO){
+
+
+    public void deleteOrder(DetailDTO detailDTO){
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
+
         System.out.println(orderEntity);
         if(orderEntity != null){
-            orderEntity.setStep(2);
-            orderRepository.save(orderEntity);
-            return orderEntity;
+            orderRepository.deleteByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         }
-        return null;
-    }
-
-    public void deleteOrder(OrderDTO orderDTO){
-
     }
 }

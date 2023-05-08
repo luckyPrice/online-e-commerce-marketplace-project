@@ -18,4 +18,6 @@ public class OrderDTO {
     private int price;
     private String URL;
     private String address;
+
+    private String date;
 }

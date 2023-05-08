@@ -120,9 +120,11 @@ public class UploadController {
         return showUploadService.ShowUploadDetail(itemid);
     }
 
+
+
     @PostMapping("/orderDetail")
     public UploadDTO orderDetail(@RequestBody DetailDTO detailDTO){
-
+        System.out.println("디테일디티오" + showUploadService.OrderUploadDetail(detailDTO));
         return showUploadService.OrderUploadDetail(detailDTO);
     }
 

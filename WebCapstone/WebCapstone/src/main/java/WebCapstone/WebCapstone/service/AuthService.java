@@ -1,20 +1,33 @@
 package WebCapstone.WebCapstone.service;
 
 import WebCapstone.WebCapstone.DTO.*;
+import WebCapstone.WebCapstone.entity.CashInfo;
 import WebCapstone.WebCapstone.entity.MemberEntity;
 import WebCapstone.WebCapstone.filter.JwtAuthencationFilter;
+import WebCapstone.WebCapstone.repository.CashInfoRepository;
 import WebCapstone.WebCapstone.repository.MemberRepository;
 import WebCapstone.WebCapstone.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AuthService {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    CashInfoRepository cashInfoRepository;
 
     @Autowired TokenProvider tokenProvider;
 
@@ -129,5 +142,38 @@ public class AuthService {
             memberEntity.setCash(memberEntity.getCash() - cashDTO.getCash());
             memberRepository.save(memberEntity);
         }
+    }
+
+    public List<CashInfo> getCashOrder(NicknameDTO nicknameDTO){
+        List<CashInfo> cashInfoList = cashInfoRepository.findAll(Sort.by("date"));
+        List<CashInfo> cashInfos = new ArrayList<>();;
+        for(var i = 0 ; i < cashInfoRepository.count(); i++){
+            if(Objects.equals(cashInfoList.get(i).getNickname(), nicknameDTO.getNickname())){
+                cashInfos.add(cashInfoList.get(i));
+            }
+        }
+        System.out.println(cashInfos);
+        return cashInfos;
+    }
+
+    public void createCashInfo(CashDTO cashDTO, String plus){
+        int id = 1;
+        try{
+            while(cashInfoRepository.findByid(id)!=null){
+                id++;
+            }
+        }
+        catch(Exception e){
+            System.out.println("오류");
+        }
+        MemberEntity memberEntity = memberRepository.findByNickname(cashDTO.getNickname());
+
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+        CashInfo cashInfo = new CashInfo(id, cashDTO.getNickname(), plus, cashDTO.getCash(), memberEntity.getCash(), stringBuffer.toString());
+        cashInfoRepository.save(cashInfo);
+
     }
 }
