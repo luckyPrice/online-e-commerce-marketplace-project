@@ -61,7 +61,9 @@ public class ShowUploadService {
 
 
     public UploadDTO ShowUploadDetail(ItemIDDTO itemIDDTO) {
+        System.out.println(itemIDDTO);
         UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
+
         uploadEntity.setView(uploadEntity.getView()+1);
         uploadRepository.save(uploadEntity);
         boolean favorcheck = false;
@@ -91,12 +93,13 @@ public class ShowUploadService {
         return null;
     }
 
+
     public UploadDTO OrderUploadDetail(DetailDTO detailDTO) {
         UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getSeller(), detailDTO.getObject());
         if(uploadEntity == null){
             uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getBuyer(), detailDTO.getObject());
         }
-
+        System.out.println(uploadEntity);
         if(uploadEntity != null){
             UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
                     .itemid(uploadEntity.getItemid())

@@ -59,6 +59,13 @@ public class ChatRoomController {
         return chatService.checkChatCount(nickname.getNickname());
     }
 
+    @PostMapping("/getalarm")
+    @ResponseBody
+    public List<ChatDTO> getAlarm(@RequestBody NicknameDTO nicknameDTO){
+        System.out.println(chatService.getAlarm(nicknameDTO.getNickname()));
+        return chatService.getAlarm(nicknameDTO.getNickname());
+    }
+
 
 
 }

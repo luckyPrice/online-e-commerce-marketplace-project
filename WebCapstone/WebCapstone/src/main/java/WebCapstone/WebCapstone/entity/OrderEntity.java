@@ -29,6 +29,7 @@ public class OrderEntity {
     private String URL;
     private String address;
 
+    private String date;
     private int step;
 
     public OrderEntity(OrderDTO dto){

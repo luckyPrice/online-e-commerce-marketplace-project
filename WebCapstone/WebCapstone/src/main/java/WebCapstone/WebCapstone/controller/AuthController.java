@@ -2,6 +2,7 @@ package WebCapstone.WebCapstone.controller;
 
 import WebCapstone.WebCapstone.DTO.*;
 //import WebCapstone.WebCapstone.service.AuthService;
+import WebCapstone.WebCapstone.entity.CashInfo;
 import WebCapstone.WebCapstone.service.AuthService;
 import WebCapstone.WebCapstone.service.OrderService;
 import jakarta.validation.Valid;
@@ -57,6 +58,7 @@ public class AuthController {
     @PostMapping("/UpdateCash") // 로그인 기능
     public void UpdateCash(@RequestBody CashDTO cashDTO){
         authService.UpdateCash(cashDTO);
+        authService.createCashInfo(cashDTO, "plus");
         //return result;
 
     }
@@ -64,10 +66,19 @@ public class AuthController {
     @PostMapping("/ReduceCash") // 로그인 기능
     public void ReduceCash(@RequestBody CashDTO cashDTO){
         authService.ReduceCash(cashDTO);
+        authService.createCashInfo(cashDTO, "minus");
 
         //return result;
 
     }
+
+    @PostMapping("/getCashOrder")
+    public List<CashInfo> getCashOrder(@RequestBody NicknameDTO nicknameDTO){
+    System.out.println("???");
+        return authService.getCashOrder(nicknameDTO);
+    }
+
+
 
 
 

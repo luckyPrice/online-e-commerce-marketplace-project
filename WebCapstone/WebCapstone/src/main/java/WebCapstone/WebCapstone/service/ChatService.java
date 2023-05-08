@@ -4,6 +4,7 @@ package WebCapstone.WebCapstone.service;
 import WebCapstone.WebCapstone.DTO.ChatDTO;
 import WebCapstone.WebCapstone.DTO.ItemIDDTO;
 import WebCapstone.WebCapstone.DTO.MyChatDTO;
+import WebCapstone.WebCapstone.DTO.NicknameDTO;
 import WebCapstone.WebCapstone.entity.ChatEntity;
 import WebCapstone.WebCapstone.entity.ChatInfo;
 import WebCapstone.WebCapstone.entity.UploadEntity;
@@ -57,10 +58,7 @@ public class ChatService {
             chatInfoRepository.save(chatInfo1);
             chatInfoRepository.save(chatInfo2);
         }
-        if (chatRepository.findBySenduserAndReceiveuserAndChattitleAndMessageAndType(chatDTO.getSenduser(), chatDTO.getReceiveuser(), chatDTO.getChattitle(), chatDTO.getMessage(), chatDTO.getType()) != null) {
 
-            return null;
-        }
         ChatEntity chatEntity = new ChatEntity(id, chatDTO.getSenduser(), chatDTO.getReceiveuser(),
                 chatDTO.getChattitle(),
                 chatDTO.getMessage(), chatDTO.getDate(), 1, chatDTO.getType());
@@ -79,10 +77,16 @@ public class ChatService {
         //ChatRequest pageRequest = PageRequest.of(0, chatRepository.count(), Sort.by("id").ascending());
         List<ChatEntity> chat = chatRepository.findAll(Sort.by("date"));
         System.out.println(chatDTO);
+        System.out.println("chat" + chat);
         ChatInfo chatInfo = chatInfoRepository.findBySenduserAndReceiveuserAndChattitle(chatDTO.getReceiveuser(), chatDTO.getSenduser(), chatDTO.getChattitle());
-        chatInfo.setNotread(0);
+        if(chatInfo != null){
+            chatInfo.setNotread(0);
+        }
+
         chatInfoRepository.save(chatInfo);
+        System.out.println(chatRepository.count());
         for(var i = 0 ; i < chatRepository.count(); i ++){
+            System.out.println(chat.get(i));
             if(Objects.equals(chat.get(i).getSenduser(), chatDTO.getSenduser()) && Objects.equals(chat.get(i).getReceiveuser(), chatDTO.getReceiveuser()) && Objects.equals(chat.get(i).getChattitle(), chatDTO.getChattitle())){
                 ChatDTO chatDTO1 = ChatDTO.builder().senduser(chat.get(i).getSenduser()).receiveuser(chat.get(i).getReceiveuser()).chattitle(chat.get(i).getChattitle()).message(chat.get(i).getMessage())
                                 .date(chat.get(i).getDate()).notread(chat.get(i).getNotread()).type(chat.get(i).getType()).build();
@@ -145,6 +149,35 @@ public class ChatService {
             chatInfoRepository.deleteByReceiveuserAndChattitle(uploadEntity.getMemberid(), uploadEntity.getTitle());
             System.out.println("ok");
         }
+    }
+
+    public List<ChatDTO> getAlarm(String nickname){
+        List<ChatDTO> chatDTOS = new ArrayList<>();
+        List<ChatInfo> chatInfos = chatInfoRepository.findAll();
+        List<ChatEntity> chatEntities = chatRepository.findAll(Sort.by("date"));
+        System.out.println("1" + chatEntities);
+        System.out.println("2" + chatInfos);
+        int count = 0;
+        for(var i = 0 ; i < chatInfoRepository.count(); i++){
+            if(Objects.equals(chatInfos.get(i).getReceiveuser(), nickname)){
+                count = count + chatInfos.get(i).getNotread();
+            }
+
+        }
+        System.out.println("카운트는" + count);
+
+        for(var i = 0 ; i < chatRepository.count(); i++){
+            if(chatEntities.get(i).getNotread() == 1 && count > 0){
+                ChatDTO chatDTO = ChatDTO.builder().senduser(chatEntities.get(i).getSenduser()).receiveuser(chatEntities.get(i).getReceiveuser()).chattitle(chatEntities.get(i).getChattitle()).message(chatEntities.get(i).getMessage())
+                        .date(chatEntities.get(i).getDate()).notread(1).type(chatEntities.get(i).getType()).build();
+                chatDTOS.add(chatDTO);
+                count = count - 1;
+            }
+        }
+        System.out.println("???" + chatDTOS);
+    return chatDTOS;
+
+
     }
 
 
