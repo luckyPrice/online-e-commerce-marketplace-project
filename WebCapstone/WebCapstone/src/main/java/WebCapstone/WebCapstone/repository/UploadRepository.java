@@ -19,4 +19,6 @@ public interface UploadRepository extends JpaRepository<UploadEntity, String> {
 
     public List<UploadEntity> findByCategory(String category);
 
+
+
 }

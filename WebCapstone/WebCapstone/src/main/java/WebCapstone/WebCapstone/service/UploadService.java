@@ -1,9 +1,6 @@
 package WebCapstone.WebCapstone.service;
 
-import WebCapstone.WebCapstone.DTO.FavorDTO;
-import WebCapstone.WebCapstone.DTO.FavorRequestDTO;
-import WebCapstone.WebCapstone.DTO.ItemIDDTO;
-import WebCapstone.WebCapstone.DTO.ResponseDTO;
+import WebCapstone.WebCapstone.DTO.*;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
 import WebCapstone.WebCapstone.entity.FavorEntity;
@@ -140,6 +137,15 @@ public class UploadService {
     public void changeStatus(ItemIDDTO itemIDDTO){
         UploadEntity uploadEntity = uploadRepository.findByItemid(itemIDDTO.getItemid());
         uploadEntity.setStatus(itemIDDTO.getCurrentuser());
+        uploadRepository.save(uploadEntity);
+    }
+
+    public void uploadchange(ChangeDTO changeDTO){
+        UploadEntity uploadEntity = uploadRepository.findByItemid(changeDTO.getItemid());
+        uploadEntity.setItemprice(changeDTO.getItemprice());
+        uploadEntity.setItemname(changeDTO.getItemname());
+        uploadEntity.setTitle(changeDTO.getTitle());
+        uploadEntity.setMaintext(changeDTO.getMaintext());
         uploadRepository.save(uploadEntity);
     }
 }

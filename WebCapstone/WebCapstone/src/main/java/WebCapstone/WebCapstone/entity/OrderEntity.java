@@ -10,6 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,9 +34,16 @@ public class OrderEntity {
     private String address;
 
     private String date;
+
+    private String receivedate;
     private int step;
 
     public OrderEntity(OrderDTO dto){
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
 
         this.seller = dto.getSeller();
         this.buyer = dto.getBuyer();
@@ -41,5 +52,6 @@ public class OrderEntity {
         this.URL = dto.getURL();
         this.address = dto.getAddress();
         this.step = 1;
+        this.date = stringBuffer.toString();
     }
 }

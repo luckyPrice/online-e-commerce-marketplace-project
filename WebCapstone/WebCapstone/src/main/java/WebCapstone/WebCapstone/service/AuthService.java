@@ -67,6 +67,12 @@ public class AuthService {
         if(!checkPassword(dto)){
             return ResponseDTO.setFailed("비밀번호가 너무 짧아요.");
         }
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+        dto.setDate(stringBuffer.toString());
         MemberEntity userEntity = new MemberEntity(dto);
 
         //비밀번호 암호화

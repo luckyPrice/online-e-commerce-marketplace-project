@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class OrderService {
             simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
 
             OrderEntity orderEntity = new OrderEntity(id, orderDTO.getSeller(), orderDTO.getBuyer(), orderDTO.getObject(), orderDTO.getPrice()
-                    ,orderDTO.getURL(), orderDTO.getAddress(), stringBuffer.toString(), 1);
+                    ,orderDTO.getURL(), orderDTO.getAddress(), stringBuffer.toString()," ", 1);
             System.out.println(orderEntity);
             orderRepository.save(orderEntity);
             return orderEntity;
@@ -71,6 +73,13 @@ public class OrderService {
         System.out.println("orderNext" + detailDTO);
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         orderEntity.setStep(orderEntity.getStep() + 1);
+        if(orderEntity.getStep() == 3){
+            StringBuffer stringBuffer = new StringBuffer();
+            Date now = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+            simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+            orderEntity.setReceivedate(stringBuffer.toString());
+        }
         System.out.println(orderEntity);
         orderRepository.save(orderEntity);
 
@@ -87,6 +96,9 @@ public class OrderService {
 
 
 
+
+
+
     public void deleteOrder(DetailDTO detailDTO){
         OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
 
@@ -94,5 +106,57 @@ public class OrderService {
         if(orderEntity != null){
             orderRepository.deleteByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
         }
+    }
+
+    public int checktime(DetailDTO detailDTO){
+        OrderEntity orderEntity = orderRepository.findByBuyerAndSellerAndObject(detailDTO.getBuyer(), detailDTO.getSeller(), detailDTO.getObject());
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+
+
+        String str1[];
+        String str2[];
+        str1 = orderEntity.getReceivedate().split("/");
+        str2 = stringBuffer.toString().split("/");
+        System.out.println(Arrays.toString(str1));
+        System.out.println(Arrays.toString(str2));
+        String str3[];
+        String str4[];
+        str3 = str1[2].split(" ");
+        str4 = str2[2].split(" ");
+        int orderyear = Integer.parseInt(str3[0]);
+        int nowyear = Integer.parseInt(str4[0]);
+        int ordermonth = Integer.parseInt(str1[0]);
+        int nowmonth = Integer.parseInt(str2[0]);
+        int orderday = Integer.parseInt(str1[1]);
+        int nowday = Integer.parseInt(str2[1]);
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        c1.set(orderyear, ordermonth, orderday);
+        c2.set(nowyear, nowmonth, nowday);
+        long d1,d2;
+        d1=c1.getTimeInMillis();
+        d2=c2.getTimeInMillis();
+
+        int days =(int)((d2-d1)/(1000*60*60*24));
+        System.out.println("날짜 차이는 " + days);
+
+
+
+        if(days >= 2){
+            System.out.println("2일이 지났습니다");
+        }
+
+
+    return days;
+
+
+
+        //System.out.println(now.getTime() - orderEntity.getDate());
+
+
     }
 }

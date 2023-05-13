@@ -99,7 +99,7 @@ public class ShowUploadService {
         if(uploadEntity == null){
             uploadEntity = uploadRepository.findByMemberidAndTitle(detailDTO.getBuyer(), detailDTO.getObject());
         }
-        System.out.println(uploadEntity);
+        System.out.println("업로드 엔티티" + uploadEntity);
         if(uploadEntity != null){
             UploadDTO uploadDTO = UploadDTO.builder().memberid(uploadEntity.getMemberid())
                     .itemid(uploadEntity.getItemid())

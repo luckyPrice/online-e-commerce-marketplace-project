@@ -25,6 +25,8 @@ public class SignupDTO {
     @NotEmpty(message = "주소를 입력해주세요")
     private String address;
 
+    private String date;
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -57,6 +59,8 @@ public class SignupDTO {
         this.sex = sex;
     }
 
+    public void setDate(String date){this.date = date;}
+
     public String getUsername() {
         return username;
     }
@@ -88,4 +92,8 @@ public class SignupDTO {
     public String getSex() {
         return sex;
     }
+
+    public String getDate(){return date;}
+
+
 }
