@@ -30,6 +30,8 @@ public class MemberEntity {
 
     private int cash;
 
+    private String date;
+
     public MemberEntity(SignupDTO dto){
         this.username = dto.getUsername();
         this.id = dto.getId();
@@ -40,5 +42,6 @@ public class MemberEntity {
         this.sex = dto.getSex();
         this.address = dto.getAddress();
         this.cash = 0;
+        this.date = dto.getDate();
     }
 }

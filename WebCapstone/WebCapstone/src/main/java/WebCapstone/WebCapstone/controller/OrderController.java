@@ -49,6 +49,13 @@ public class OrderController {
 
     }
 
+    @PostMapping("/checktime")
+    @ResponseBody
+    public int checkTime(@RequestBody DetailDTO detailDTO){
+        return orderService.checktime(detailDTO);
+    }
+
+
 
 
     @PostMapping("/orderchange")

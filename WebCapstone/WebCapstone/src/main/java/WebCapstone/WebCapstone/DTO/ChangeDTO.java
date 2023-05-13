@@ -1,5 +1,6 @@
 package WebCapstone.WebCapstone.DTO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -9,16 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class OrderDTO {
-    private String seller;
-    private String buyer;
+public class ChangeDTO {
+    private int itemid;
 
-    private String object;
+    private String itemname;
 
-    private int price;
-    private String URL;
-    private String address;
+    private String title;//게시글 제목
 
-    private String date;
+    private String maintext;//게시글 본문
 
+    private int itemprice;
 }

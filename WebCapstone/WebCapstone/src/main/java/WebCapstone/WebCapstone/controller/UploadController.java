@@ -1,9 +1,6 @@
 package WebCapstone.WebCapstone.controller;
 
-import WebCapstone.WebCapstone.DTO.DetailDTO;
-import WebCapstone.WebCapstone.DTO.FavorDTO;
-import WebCapstone.WebCapstone.DTO.ItemIDDTO;
-import WebCapstone.WebCapstone.DTO.ResponseDTO;
+import WebCapstone.WebCapstone.DTO.*;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadDTO;
 import WebCapstone.WebCapstone.DTO.Upload_Order.UploadResponseDTO;
 import WebCapstone.WebCapstone.service.AwsS3Service;
@@ -105,6 +102,12 @@ public class UploadController {
         return showUploadService.ShowUpload();
 
 
+    }
+
+    @PostMapping("/Changeupload") // 가격 수정 기능
+    public void changeupload(@RequestBody ChangeDTO changeDTO){
+        System.out.println(changeDTO);
+        uploadService.uploadchange(changeDTO);
     }
 
 
