@@ -1,6 +1,7 @@
 package WebCapstone.WebCapstone.controller;
 
 import WebCapstone.WebCapstone.DTO.DetailDTO;
+import WebCapstone.WebCapstone.DTO.NicknameDTO;
 import WebCapstone.WebCapstone.DTO.OrderDTO;
 import WebCapstone.WebCapstone.entity.OrderEntity;
 import WebCapstone.WebCapstone.service.OrderService;
@@ -72,5 +73,11 @@ public class OrderController {
 
         orderService.deleteOrder(detailDTO);
 
+    }
+
+    @PostMapping("/ordercount")
+    @ResponseBody
+    public int orderCount(@RequestBody NicknameDTO nicknameDTO){
+        return orderService.orderCount(nicknameDTO);
     }
 }

@@ -78,6 +78,11 @@ public class AuthController {
         return authService.getCashOrder(nicknameDTO);
     }
 
+    @PostMapping("createAuthtime")
+    public int getTime(@RequestBody NicknameDTO nicknameDTO) {
+        return authService.getTime(nicknameDTO);
+    }
+
 
 
 

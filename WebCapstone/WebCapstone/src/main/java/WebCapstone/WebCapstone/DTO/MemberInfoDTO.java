@@ -20,4 +20,6 @@ public class MemberInfoDTO {
     private String address;
 
     private int cash;
+
+    private String date;
 }
