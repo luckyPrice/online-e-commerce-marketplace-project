@@ -2,6 +2,7 @@ package WebCapstone.WebCapstone.service;
 
 
 import WebCapstone.WebCapstone.DTO.DetailDTO;
+import WebCapstone.WebCapstone.DTO.NicknameDTO;
 import WebCapstone.WebCapstone.DTO.OrderDTO;
 import WebCapstone.WebCapstone.entity.OrderEntity;
 import WebCapstone.WebCapstone.repository.OrderRepository;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -95,7 +93,18 @@ public class OrderService {
     }
 
 
-
+    public int orderCount(NicknameDTO nicknameDTO){
+        List<OrderEntity> orderEntities = orderRepository.findAll();
+        var count = 0;
+        if(orderEntities != null){
+            for(var i = 0; i < orderEntities.size(); i++){
+                if(Objects.equals(orderEntities.get(i).getBuyer(), nicknameDTO.getNickname()) || Objects.equals(orderEntities.get(i).getSeller(), nicknameDTO.getNickname())){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 
 
 

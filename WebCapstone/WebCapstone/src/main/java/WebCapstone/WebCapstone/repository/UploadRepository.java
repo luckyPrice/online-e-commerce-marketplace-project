@@ -17,6 +17,8 @@ public interface UploadRepository extends JpaRepository<UploadEntity, String> {
 
     public UploadEntity findByMemberidAndTitle(String memberid, String title);
 
+    public UploadEntity findByMemberidAndTitleAndStatus(String memberid, String title, String status);
+
     public List<UploadEntity> findByCategory(String category);
 
 

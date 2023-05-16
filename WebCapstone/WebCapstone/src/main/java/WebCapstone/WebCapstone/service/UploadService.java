@@ -75,6 +75,12 @@ public class UploadService {
         if(maintext.equals(null)==true){
             dto.setMaintext(" ");
         }
+        UploadEntity uploadEntity = uploadRepository.findByMemberidAndTitleAndStatus(dto.getMemberid(), dto.getTitle(), "판매중");
+        if(uploadEntity != null){
+            return ResponseDTO.setFailed("이미 동일한 제품을 올렸습니다. 다시 확인해주세요");
+        }
+
+
 
         UploadEntity upload = new UploadEntity(dto);
 

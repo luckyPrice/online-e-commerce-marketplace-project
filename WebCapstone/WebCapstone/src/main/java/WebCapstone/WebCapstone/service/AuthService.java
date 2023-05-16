@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class AuthService {
@@ -126,7 +123,7 @@ public class AuthService {
         System.out.println(memberEntity);
         if(memberEntity != null){
             MemberInfoDTO memberInfoDTO = new MemberInfoDTO(memberEntity.getUsername(), memberEntity.getNickname(), memberEntity.getPhonenumber(),
-                    memberEntity.getSex(), memberEntity.getAddress(), memberEntity.getCash());
+                    memberEntity.getSex(), memberEntity.getAddress(), memberEntity.getCash(), memberEntity.getDate());
             return memberInfoDTO;
         }
         return null;
@@ -181,5 +178,44 @@ public class AuthService {
         CashInfo cashInfo = new CashInfo(id, cashDTO.getNickname(), plus, cashDTO.getCash(), memberEntity.getCash(), stringBuffer.toString());
         cashInfoRepository.save(cashInfo);
 
+    }
+
+    public int getTime(NicknameDTO nicknameDTO){
+        MemberEntity memberEntity = memberRepository.findByNickname(nicknameDTO.getNickname());
+
+        StringBuffer stringBuffer = new StringBuffer();
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+        simpleDateFormat.format(now, stringBuffer, new FieldPosition(0));
+
+        String str1[];
+        String str2[];
+        str1 = memberEntity.getDate().split("/");
+        str2 = stringBuffer.toString().split("/");
+        System.out.println(Arrays.toString(str1));
+        System.out.println(Arrays.toString(str2));
+        String str3[];
+        String str4[];
+        str3 = str1[2].split(" ");
+        str4 = str2[2].split(" ");
+        int orderyear = Integer.parseInt(str3[0]);
+        int nowyear = Integer.parseInt(str4[0]);
+        int ordermonth = Integer.parseInt(str1[0]);
+        int nowmonth = Integer.parseInt(str2[0]);
+        int orderday = Integer.parseInt(str1[1]);
+        int nowday = Integer.parseInt(str2[1]);
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        c1.set(orderyear, ordermonth, orderday);
+        c2.set(nowyear, nowmonth, nowday);
+        long d1,d2;
+        d1=c1.getTimeInMillis();
+        d2=c2.getTimeInMillis();
+
+        int days =(int)((d2-d1)/(1000*60*60*24));
+        System.out.println("날짜 차이는 " + days);
+
+        return days;
     }
 }
