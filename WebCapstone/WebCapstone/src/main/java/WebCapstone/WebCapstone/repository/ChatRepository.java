@@ -18,4 +18,7 @@ public interface ChatRepository extends JpaRepository<ChatEntity, String> {
 
     @Transactional
     public void deleteByReceiveuserAndChattitle(String receiveuser, String chattitle);
+
+    @Transactional
+    public void deleteByChattitle(String chattitle);
 }

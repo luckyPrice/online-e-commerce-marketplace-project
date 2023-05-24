@@ -13,5 +13,8 @@ public interface FavorRepository extends JpaRepository<FavorEntity, String> {
     @Transactional
     public void deleteById(int id);
 
+    @Transactional
+    public void deleteByTitle(String title);
+
     public FavorEntity findBySenduser(String senduser);
 }

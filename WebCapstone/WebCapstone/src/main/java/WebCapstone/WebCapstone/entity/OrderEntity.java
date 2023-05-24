@@ -38,6 +38,8 @@ public class OrderEntity {
     private String receivedate;
     private int step;
 
+    private String request;
+
     public OrderEntity(OrderDTO dto){
         StringBuffer stringBuffer = new StringBuffer();
         Date now = new Date();
@@ -53,5 +55,6 @@ public class OrderEntity {
         this.address = dto.getAddress();
         this.step = 1;
         this.date = stringBuffer.toString();
+        this.request = dto.getRequest();
     }
 }

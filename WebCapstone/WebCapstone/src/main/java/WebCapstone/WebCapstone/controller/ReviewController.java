@@ -32,7 +32,6 @@ public class ReviewController {
             }
             return ResponseDTO.setFailed("올바르게 정보를 입력해주세요");
         }
-        System.out.println(requestBody);
         ResponseDTO<?> result = forumService.Store(requestBody);
         return result;
 

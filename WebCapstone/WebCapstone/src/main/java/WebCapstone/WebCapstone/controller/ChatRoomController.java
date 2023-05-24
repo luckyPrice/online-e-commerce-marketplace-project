@@ -62,7 +62,6 @@ public class ChatRoomController {
     @PostMapping("/getalarm")
     @ResponseBody
     public List<ChatDTO> getAlarm(@RequestBody NicknameDTO nicknameDTO){
-        System.out.println(chatService.getAlarm(nicknameDTO.getNickname()));
         return chatService.getAlarm(nicknameDTO.getNickname());
     }
 
