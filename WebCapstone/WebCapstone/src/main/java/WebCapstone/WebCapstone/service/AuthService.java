@@ -120,7 +120,6 @@ public class AuthService {
 
     public MemberInfoDTO getMemberInfo(NicknameDTO nicknameDTO){
         MemberEntity memberEntity = memberRepository.findByNickname(nicknameDTO.getNickname());
-        System.out.println(memberEntity);
         if(memberEntity != null){
             MemberInfoDTO memberInfoDTO = new MemberInfoDTO(memberEntity.getUsername(), memberEntity.getNickname(), memberEntity.getPhonenumber(),
                     memberEntity.getSex(), memberEntity.getAddress(), memberEntity.getCash(), memberEntity.getDate());
@@ -131,7 +130,6 @@ public class AuthService {
 
     public void UpdateCash(CashDTO cashDTO){
         MemberEntity memberEntity = memberRepository.findByNickname(cashDTO.getNickname());
-        System.out.println(memberEntity);
         if(memberEntity != null){
             memberEntity.setCash(memberEntity.getCash() + cashDTO.getCash());
             memberRepository.save(memberEntity);
@@ -140,7 +138,6 @@ public class AuthService {
 
     public void ReduceCash(CashDTO cashDTO){
         MemberEntity memberEntity = memberRepository.findByNickname(cashDTO.getNickname());
-        System.out.println(memberEntity);
         if(memberEntity != null){
             memberEntity.setCash(memberEntity.getCash() - cashDTO.getCash());
             memberRepository.save(memberEntity);
@@ -155,7 +152,6 @@ public class AuthService {
                 cashInfos.add(cashInfoList.get(i));
             }
         }
-        System.out.println(cashInfos);
         return cashInfos;
     }
 

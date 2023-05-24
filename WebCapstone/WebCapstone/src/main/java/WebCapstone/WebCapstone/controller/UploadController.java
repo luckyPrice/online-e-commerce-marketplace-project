@@ -53,9 +53,8 @@ public class UploadController {
             , @RequestParam(value="itemprice", required=false) String itemprice
             , @RequestParam(value="detailcategory", required=false)String detailcategory
             ,@RequestParam(value="purpose", required=false) String purpose) throws IOException {
-        System.out.println(files);
         String URL;
-        if(files==null){
+        if(files == null){
             URL = null;
         }
         else{
@@ -137,6 +136,16 @@ public class UploadController {
         showUploadService.deleteFavor(itemid); // 해당 게시물에 찜해 놓은 유저들 모두 삭제
         chatService.deleteChat(itemid); // 해당 게시물과 관련된 채팅 모두 삭제
         uploadService.deleteUpload(itemid); // 해당 게시물 직접 삭제
+
+
+    }
+
+    @PostMapping("/finish")
+    public void finishUpload(@RequestBody NicknameDTO nicknameDTO){
+
+        showUploadService.finishFavor(nicknameDTO); // 해당 게시물에 찜해 놓은 유저들 모두 삭제
+        chatService.finishChat(nicknameDTO); // 해당 게시물과 관련된 채팅 모두 삭제
+
 
 
     }

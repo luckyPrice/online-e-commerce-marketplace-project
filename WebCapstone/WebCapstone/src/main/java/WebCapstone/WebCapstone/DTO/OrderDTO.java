@@ -21,4 +21,6 @@ public class OrderDTO {
 
     private String date;
 
+    private String request;
+
 }

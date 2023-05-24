@@ -135,6 +135,12 @@ public class ShowUploadService {
 
     }
 
+    public void finishFavor(NicknameDTO nicknameDTO){
+        favorRepository.deleteByTitle(nicknameDTO.getNickname());
+
+    }
+
+
     public List<UploadDTO> favorUpload(FavorDTO favorDTO){
         System.out.println(favorDTO);
         List<FavorEntity> favorEntity = favorRepository.findAll();

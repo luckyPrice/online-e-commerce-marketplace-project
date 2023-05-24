@@ -48,14 +48,14 @@ public class AuthController {
 
     }
 
-    @PostMapping("/getAuth") // 로그인 기능
+    @PostMapping("/getAuth") // 회원정보를 가져오는 기능
     public MemberInfoDTO getAuth(@RequestBody NicknameDTO nickNameDTO){
         return authService.getMemberInfo(nickNameDTO);
         //return result;
 
     }
 
-    @PostMapping("/UpdateCash") // 로그인 기능
+    @PostMapping("/UpdateCash") // 캐시 적용
     public void UpdateCash(@RequestBody CashDTO cashDTO){
         authService.UpdateCash(cashDTO);
         authService.createCashInfo(cashDTO, "plus");
@@ -74,7 +74,6 @@ public class AuthController {
 
     @PostMapping("/getCashOrder")
     public List<CashInfo> getCashOrder(@RequestBody NicknameDTO nicknameDTO){
-    System.out.println("???");
         return authService.getCashOrder(nicknameDTO);
     }
 
